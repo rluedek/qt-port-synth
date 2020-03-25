@@ -1,0 +1,6 @@
+src/bin/*
+src/cmake_install.cmake
+src/CMakeCache.txt
+src/Makefile
+src/CMakeFiles/*
+src/qt-port-synth_autogen/*

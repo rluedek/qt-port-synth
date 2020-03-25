@@ -2,8 +2,6 @@ cmake_minimum_required(VERSION 3.5)
 
 project(qtsynth LANGUAGES CXX)
 
-#SET( CMAKE_CXX_COMPILER "/usr/bin/x86_64-w64-mingw32-g++" )
-
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(CMAKE_AUTOUIC ON)
@@ -12,6 +10,8 @@ set(CMAKE_AUTORCC ON)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 # QtCreator supports the following variables for Android, which are identical to qmake Android variables.
 # Check http://doc.qt.io/qt-5/deployment-android.html for more information.
@@ -24,7 +24,7 @@ find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
 #LINK_DIRECTORIES(/usr/lib/x86_64-linux-gnu/)
 
-add_executable(qtsynth
+add_executable(qt-port-synth
   main.cpp
   mainwindow.cpp
   mainwindow.h
@@ -42,6 +42,5 @@ add_executable(qtsynth
   audio/voicemanager/VoiceManager.cpp
   audio/modulation/ModulationValue.cpp
 )
-endif()
 
-target_link_libraries(qtsynth PRIVATE Qt5::Widgets portaudio)
+target_link_libraries(qt-port-synth PRIVATE Qt5::Widgets portaudio)
