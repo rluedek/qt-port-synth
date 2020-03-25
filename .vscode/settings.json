@@ -1,0 +1,7 @@
+{
+    "cmake.configureOnOpen": false,
+    "files.associations": {
+        "istream": "cpp",
+        "qobject": "cpp"
+    }
+}
