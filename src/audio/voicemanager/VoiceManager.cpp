@@ -39,6 +39,7 @@ void VoiceManager::noteOn(float fFrequency, float fTime)
 
     if (pVoice)
     {   
+        pVoice->reset();
         pVoice->noteOn(fFrequency, fTime);
     }
 }

@@ -23,6 +23,8 @@ public:
 
     float process(float fTime) override;
 
+    void reset() override;
+
     bool isActive() override;
     void setActive() override;
 

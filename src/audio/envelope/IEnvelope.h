@@ -8,6 +8,7 @@ public:
     virtual void noteOff(float fTime) = 0;
     virtual float getAmplitude(float fTime) = 0;
     virtual float getCurrentAmplitude() = 0;
+    virtual void reset() = 0;
 
     /*
     * Parameters

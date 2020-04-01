@@ -16,6 +16,8 @@ public:
     void noteOff(float fTime) override;
     float getAmplitude(float fTime) override;
     float getCurrentAmplitude() override;
+    void reset() override;
+
 
     bool setAttackTime(float fAttackTime) override;
     float getAttackTime() override;

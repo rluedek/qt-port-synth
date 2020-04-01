@@ -82,6 +82,14 @@ float Envelope::getCurrentAmplitude()
 	return m_fCurrentAmplitude;
 }
 
+void Envelope::reset()
+{
+	m_bNoteOn = false;
+	m_fCurrentAmplitude = 0.0;
+	m_fTriggerOffTime = 0.0;
+	m_fTriggerOnTime = 0.0;
+}
+
 bool Envelope::setAttackTime(float fAttackTime)
 {
 	if (fAttackTime <= 0.0)

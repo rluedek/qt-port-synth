@@ -38,6 +38,11 @@ float LowpassFilter::process(float fInputValue)
   return m_fBuf2;
 }
 
+void LowpassFilter::reset()
+{
+  m_fBuf0 = m_fBuf1 = m_fBuf2 = 0.0;
+}
+
 void LowpassFilter::setCutoffFrequency(float fFrequency)
 {
   m_fCutoffFrequency = fFrequency;

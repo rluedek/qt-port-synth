@@ -19,6 +19,8 @@ public:
 
     virtual float process(float fTime) = 0;
 
+    virtual void reset() = 0;
+
     virtual bool isActive() = 0;
     virtual void setActive() = 0;
 

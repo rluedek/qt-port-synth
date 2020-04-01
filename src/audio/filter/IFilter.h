@@ -8,6 +8,8 @@ public:
     virtual void triggerOff() = 0;
 
     virtual float process(float fInputValue) = 0;
+    virtual void reset() = 0;
+
 
     virtual void setCutoffFrequency(float fFrequency) = 0;
     virtual void setResonance(float fResonance) = 0;

@@ -15,6 +15,7 @@ public:
     void triggerOff() override;
 
     float process(float fInputValue) override;
+    void  reset() override;
 
     void setCutoffFrequency(float fFrequency) override;
     void setResonance(float fResonance) override;

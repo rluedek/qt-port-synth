@@ -50,7 +50,7 @@ float Voice::process(float fTime)
     
     m_pFilter->setCutoffFrequency(m_pFilterCutOff->getModulatedValue());
     m_pFilter->setResonance(m_pFilterResonance->getModulatedValue());
-    float filtered = m_pFilter->process( amp * (osc1 + osc2));
+    float filtered = m_pFilter->process( amp * 0.5 * (osc1 + osc2));
     
     if ((m_pEnvelope->isNoteOff() && m_pEnvelope->getCurrentAmplitude() == 0.0))
     {
@@ -58,6 +58,12 @@ float Voice::process(float fTime)
     }
     
     return filtered;
+}
+
+void Voice::reset()
+{
+    m_pEnvelope->reset();
+    m_pFilter->reset();
 }
 
 bool Voice::isActive()
