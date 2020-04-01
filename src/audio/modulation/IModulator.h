@@ -9,8 +9,8 @@ namespace modulation
     {
     public:
 
-        virtual void trigger(double dTime) = 0;
-        virtual double getModulationAmount() = 0;
+        virtual void trigger(float fTime) = 0;
+        virtual float getModulationAmount() = 0;
     };
 }
 

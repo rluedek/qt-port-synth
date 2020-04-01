@@ -9,17 +9,17 @@ class Lfo : public ILfo, public modulation::IModulator
 public:
     Lfo();
 
-    void setFrequency(double dFrequency) override;
-    void setAmount(double dAmount) override;
+    void setFrequency(float fFrequency) override;
+    void setAmount(float fAmount) override;
     void setOscillator(std::shared_ptr<IOscillatorFunction> pOscillator) override;
 
-    void trigger(double dTime) override;
-    double getModulationAmount() override;
+    void trigger(float fTime) override;
+    float getModulationAmount() override;
 
 private:
-    double m_dFrequency;
-    double m_dAmount;
-    double m_dModulationAmount;
+    float m_fFrequency;
+    float m_fAmount;
+    float m_fModulationAmount;
     std::shared_ptr<IOscillatorFunction> m_pOscillator;
 };
 #endif

@@ -1,16 +1,16 @@
 #include "Envelope.h"
 
 Envelope::Envelope()
-: m_dAttackTime(0.1)
-, m_dDecayTime(0.01)
-, m_dReleaseTime(2.0)
-, m_dCurrentAmplitude(0.0)
-, m_dActualSustainAmplitude(0.0)
-, m_dSustainAmplitude(0.8)
-, m_dStartAmplitude(1.0)
+: m_fAttackTime(0.1)
+, m_fDecayTime(0.01)
+, m_fReleaseTime(2.0)
+, m_fCurrentAmplitude(0.0)
+, m_fActualSustainAmplitude(0.0)
+, m_fSustainAmplitude(0.8)
+, m_fStartAmplitude(1.0)
 , m_bNoteOn(false)
-, m_dTriggerOffTime(0.0)
-, m_dTriggerOnTime(0.0)
+, m_fTriggerOffTime(0.0)
+, m_fTriggerOnTime(0.0)
 {
 }
 
@@ -19,105 +19,111 @@ Envelope::~Envelope()
 
 }
 
-void Envelope::noteOn(double dTime)
+void Envelope::noteOn(float fTime)
 {
-	m_dActualSustainAmplitude = 0.0;
-	m_dTriggerOnTime = dTime;
+	m_fActualSustainAmplitude = 0.0;
+	m_fTriggerOnTime = fTime;
 	m_bNoteOn = true;
 }
 
-void Envelope::noteOff(double dTime)
+void Envelope::noteOff(float fTime)
 {
-	m_dTriggerOffTime = dTime;
+	m_fTriggerOffTime = fTime;
 	m_bNoteOn = false;
 }
 
-double Envelope::getAmplitude(double dTime)
+float Envelope::getAmplitude(float fTime)
 {
-	double dAmplitude = 0.0;
+	float fAmplitude = 0.0;
+	float fLifeTime = 0.0;
 
 	if (m_bNoteOn)
 	{
-		double dLifeTime = dTime - m_dTriggerOnTime;
+		fLifeTime = fTime - m_fTriggerOnTime;
 
-		if (dLifeTime <= m_dAttackTime)
+		if (fLifeTime <= m_fAttackTime)
 		{
 			// In attack Phase - approach max amplitude
-			dAmplitude = (dLifeTime / m_dAttackTime) * m_dStartAmplitude;
+			fAmplitude = (fLifeTime / m_fAttackTime) * m_fStartAmplitude;
 		}
 
-		else if (dLifeTime > m_dAttackTime && dLifeTime <= (m_dAttackTime + m_dDecayTime))
+		else if (fLifeTime > m_fAttackTime && fLifeTime <= (m_fAttackTime + m_fDecayTime))
 		{
 			// In decay phase - reduce to sustained amplitude
-			dAmplitude = ((dLifeTime - m_dAttackTime) / m_dDecayTime) * (m_dSustainAmplitude - m_dStartAmplitude) + m_dStartAmplitude;
+			fAmplitude = ((fLifeTime - m_fAttackTime) / m_fDecayTime) * (m_fSustainAmplitude - m_fStartAmplitude) + m_fStartAmplitude;
 		}
 
-		else if (dLifeTime > (m_dAttackTime + m_dDecayTime))
+		else if (fLifeTime > (m_fAttackTime + m_fDecayTime))
 		{
 			// In sustain phase - dont change until note released
-			dAmplitude = m_dSustainAmplitude;
+			fAmplitude = m_fSustainAmplitude;
 		}
-		m_dActualSustainAmplitude = dAmplitude;
+		m_fActualSustainAmplitude = fAmplitude;
 	}
 	else
 	{
-		double dLifeTime = dTime - m_dTriggerOffTime;
+		fLifeTime = fTime - m_fTriggerOffTime;
 
 		// Note has been released, so in release phase
-		dAmplitude = ((dLifeTime) / m_dReleaseTime) * (0.0 - m_dActualSustainAmplitude) + m_dActualSustainAmplitude;
+		fAmplitude = ((fLifeTime) / m_fReleaseTime) * (0.0 - m_fActualSustainAmplitude) + m_fActualSustainAmplitude;
 	}
 
 	// Amplitude should not be negative
-	if (dAmplitude <= 0.0001)
-		dAmplitude = 0.0;
+	if (fAmplitude <= 0.0001)
+		fAmplitude = 0.0;
 
-	m_dCurrentAmplitude = dAmplitude;
+	m_fCurrentAmplitude = fAmplitude;
 
-	return dAmplitude;
+	return fAmplitude;
 }
 
-double Envelope::getCurrentAmplitude()
+float Envelope::getCurrentAmplitude()
 {
-	return m_dCurrentAmplitude;
+	return m_fCurrentAmplitude;
 }
 
-bool Envelope::setAttackTime(double dAttackTime)
+bool Envelope::setAttackTime(float fAttackTime)
 {
-	if (dAttackTime <= 0.0)
+	if (fAttackTime <= 0.0)
 	{
-		dAttackTime = 0.01;
+		fAttackTime = 0.01;
 	}
 
-	m_dAttackTime = dAttackTime;
+	m_fAttackTime = fAttackTime;
 	return true;
 }
 
-double Envelope::getAttackTime()
+float Envelope::getAttackTime()
 {
-	return m_dAttackTime;
+	return m_fAttackTime;
 }
 
 
-bool Envelope::setDecayTime(double dDecayTime)
+bool Envelope::setDecayTime(float fDecayTime)
 {
-	m_dDecayTime = dDecayTime;
+	m_fDecayTime = fDecayTime;
 	return true;
 }
 
-bool Envelope::setReleaseTime(double dReleaseTime)
+bool Envelope::setReleaseTime(float fReleaseTime)
 {
 
-	m_dReleaseTime = dReleaseTime;
+	m_fReleaseTime = fReleaseTime;
 	return true;
 }
 
-double Envelope::getReleaseTime()
+float Envelope::getReleaseTime()
 {
-	return m_dReleaseTime;
+	return m_fReleaseTime;
 }
 
-bool Envelope::setSustainAmplitude(double dSustainAmplitude)
+bool Envelope::setSustainAmplitude(float fSustainAmplitude)
 {
-	m_dSustainAmplitude = dSustainAmplitude;
+	m_fSustainAmplitude = fSustainAmplitude;
 	return true;
+}
+
+bool Envelope::isNoteOff()
+{
+	return (!m_bNoteOn);
 }

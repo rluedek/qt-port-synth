@@ -3,8 +3,6 @@
 #include <iostream>
 #include <memory>
 
-#include "qdebug.h"
-
 #include "audio/envelope/Envelope.h"
 #include "audio/filter/LowpassFilter.h"
 #include "audio/voice/Voice.h"
@@ -35,40 +33,40 @@ IVoice* VoiceManager::findFreeVoice()
     return freeVoice;
 }
 
-void VoiceManager::noteOn(double dFrequency, double dTime)
+void VoiceManager::noteOn(float fFrequency, float fTime)
 {
     IVoice* pVoice = findFreeVoice();
 
     if (pVoice)
     {   
-        pVoice->noteOn(dFrequency, dTime);
+        pVoice->noteOn(fFrequency, fTime);
     }
 }
 
-void VoiceManager::noteOff(double dFrequency, double dTime)
+void VoiceManager::noteOff(float fFrequency, float fTime)
 {
     IVoice* pVoice = nullptr;
     for (int i = 0; i < NumberOfVoices; i++)
     {
         pVoice = voices[i];
-        if (pVoice->isActive() && pVoice->getFrequency() == dFrequency)
+        if (pVoice->isActive() && pVoice->getFrequency() == fFrequency)
         {
-            pVoice->noteOff(dTime);
+            pVoice->noteOff(fTime);
         }
     }
 }
 
-float VoiceManager::getSample(double time)
+float VoiceManager::getSample(float fTime)
 {   
     float value = 0.0;
     IVoice* pVoice = nullptr;
-    m_pLfo->trigger(time);
+    m_pLfo->trigger(fTime);
     for (int i = 0; i < NumberOfVoices; i++)
-    {
+    {   
         pVoice = voices[i];
-        if (true) // TODO: check if its active
+        if (pVoice->isActive())
         {
-            value += pVoice->process(time);
+            value += pVoice->process(fTime);
         }
     }
 
@@ -86,7 +84,6 @@ void VoiceManager::createVoices()
         std::shared_ptr<IFilter> filter = std::make_shared<LowpassFilter>();
 
         IVoice* voice = new Voice(osc1, osc2, env, filter, m_pLfo);
-
         voices[i] = voice;
     }
 }
@@ -203,7 +200,7 @@ void VoiceManager::setResonance(int resonance)
         IVoice* pVoice = voices[i];
         
         if(pVoice)
-        {
+        {   
             pVoice->getFilterResonance()->setValue(resonance / 1000.0);
             //pVoice->getFilter()->setResonance(resonance / 1000.0);
         }

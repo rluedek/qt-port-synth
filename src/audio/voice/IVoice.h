@@ -13,15 +13,16 @@ class IVoice
 {
 public:
 
-    virtual void noteOn(double dFrequency, double dTime) = 0;
+    virtual void noteOn(float fFrequency, float fTime) = 0;
 
-    virtual void noteOff(double dTime) = 0;
+    virtual void noteOff(float fTime) = 0;
 
-    virtual double process(double dTime) = 0;
+    virtual float process(float fTime) = 0;
 
     virtual bool isActive() = 0;
+    virtual void setActive() = 0;
 
-    virtual double getFrequency() = 0;
+    virtual float getFrequency() = 0;
 
     virtual std::shared_ptr<IOscillatorFunction> getOscillator1() = 0;
     virtual void setOscillator1(std::shared_ptr<IOscillatorFunction> func) = 0;

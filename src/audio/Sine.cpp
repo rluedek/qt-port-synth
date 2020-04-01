@@ -14,7 +14,7 @@ Sine::Sine()
 
  }
 
-double Sine::calculate(double& time, double frequency)
+float Sine::calculate(float& fTime, float fFrequency)
 {
-    return sin( 2. * M_PI * frequency * time);
+    return sin( 2. * M_PI * fFrequency * fTime);
 }

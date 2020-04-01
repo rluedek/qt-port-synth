@@ -29,15 +29,15 @@ public:
     void initialize();
     void terminate();
     void open();
-    void play(double frequency);
-    void stop(double frequency);
+    void play(float frequency);
+    void stop(float frequency);
 
     int paUserCallback( const void *inputBuffer, void *outputBuffer,
                         unsigned long framesPerBuffer,
                         const PaStreamCallbackTimeInfo* timeInfo,
                         PaStreamCallbackFlags statusFlags);
 
-    double getGlobalTime();
+    float getGlobalTime();
 
     void setVoiceManager(VoiceManager* pVoicemanager);
 
@@ -59,9 +59,9 @@ private:
 
     static int m_sDefaultDeviceNumber;
 
-    double m_priorFreq;
-    double m_frequency;
-    double m_globalTime;
+    float m_priorFreq;
+    float m_frequency;
+    float m_globalTime;
 
     VoiceManager* m_pVoiceManager;
 

@@ -13,13 +13,13 @@ public:
     //ctor
     VoiceManager();
 
-    static const int NumberOfVoices = 64;
+    static const int NumberOfVoices = 20;
 
-    void noteOn(double dFrequency, double dTime);
+    void noteOn(float fFrequency, float fTime);
 
-    void noteOff(double dFrequency, double dTime);
+    void noteOff(float fFrequency, float fTime);
 
-    float getSample(double time);
+    float getSample(float fTime);
 
     //Oscillators
     void setOscillator1(std::shared_ptr<IOscillatorFunction> func);

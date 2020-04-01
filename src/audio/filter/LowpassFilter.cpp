@@ -2,11 +2,11 @@
 
 //ctor
 LowpassFilter::LowpassFilter()
-: m_dCutoffFrequency(0.999)
-, m_dBuf0(0.0)
-, m_dBuf1(0.0)
-, m_dBuf2(0.0)
-, m_dResonance(0.0)
+: m_fCutoffFrequency(0.999)
+, m_fBuf0(0.0)
+, m_fBuf1(0.0)
+, m_fBuf2(0.0)
+, m_fResonance(0.0)
 , m_bNoteOn(false)
 {
   calculateFeedbackAmount();
@@ -29,28 +29,28 @@ void LowpassFilter::triggerOff()
   m_bNoteOn = false;
 }
 
-double LowpassFilter::process(double inputValue)
+float LowpassFilter::process(float fInputValue)
 {
-  m_dBuf0 += m_dCutoffFrequency *  (inputValue - m_dBuf0 + m_dFeedbackAmount * (m_dBuf0 - m_dBuf1));
-  m_dBuf1 += m_dCutoffFrequency *  (m_dBuf0 - m_dBuf1);
-  m_dBuf2 += m_dCutoffFrequency *  (m_dBuf1 - m_dBuf2);
+  m_fBuf0 += m_fCutoffFrequency *  (fInputValue - m_fBuf0 + m_fFeedbackAmount * (m_fBuf0 - m_fBuf1));
+  m_fBuf1 += m_fCutoffFrequency *  (m_fBuf0 - m_fBuf1);
+  m_fBuf2 += m_fCutoffFrequency *  (m_fBuf1 - m_fBuf2);
   
-  return m_dBuf2;
+  return m_fBuf2;
 }
 
-void LowpassFilter::setCutoffFrequency(double frequency)
+void LowpassFilter::setCutoffFrequency(float fFrequency)
 {
-  m_dCutoffFrequency = frequency;
+  m_fCutoffFrequency = fFrequency;
   calculateFeedbackAmount();
 }
 
-void LowpassFilter::setResonance(double resonance)
+void LowpassFilter::setResonance(float fResonance)
 {
-  m_dResonance = resonance;
+  m_fResonance = fResonance;
   calculateFeedbackAmount();
 }
 
-double LowpassFilter::getFeedbackAmount()
+float LowpassFilter::getFeedbackAmount()
 {
-  return m_dFeedbackAmount;
+  return m_fFeedbackAmount;
 }

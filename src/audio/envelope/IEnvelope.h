@@ -4,23 +4,25 @@
 class IEnvelope
 {
 public:
-    virtual void noteOn(double dTime) = 0;
-    virtual void noteOff(double dTime) = 0;
-    virtual double getAmplitude(double dTime) = 0;
-    virtual double getCurrentAmplitude() = 0;
+    virtual void noteOn(float fTime) = 0;
+    virtual void noteOff(float fTime) = 0;
+    virtual float getAmplitude(float fTime) = 0;
+    virtual float getCurrentAmplitude() = 0;
 
     /*
     * Parameters
     */
-    virtual bool setAttackTime(double dAttackTime) = 0;
-    virtual double getAttackTime() = 0;
+    virtual bool setAttackTime(float fAttackTime) = 0;
+    virtual float getAttackTime() = 0;
 
-    virtual bool setDecayTime(double dDecayTime) = 0;
+    virtual bool setDecayTime(float fDecayTime) = 0;
 
-    virtual bool setReleaseTime(double dReleaseTime) = 0;
-    virtual double getReleaseTime() = 0;
+    virtual bool setReleaseTime(float fReleaseTime) = 0;
+    virtual float getReleaseTime() = 0;
 
-    virtual bool setSustainAmplitude(double dSustainAmplitude) = 0;
+    virtual bool setSustainAmplitude(float fSustainAmplitude) = 0;
+
+    virtual bool isNoteOff() = 0;
 };
 
 #endif
