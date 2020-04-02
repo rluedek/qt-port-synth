@@ -1,5 +1,7 @@
 #include "Voice.h"
 
+#include <iostream>
+
 Voice::Voice(std::shared_ptr<IOscillatorFunction> pOscillator1
             , std::shared_ptr<IOscillatorFunction> pOscillator2
             , IEnvelope* pEnvelope
@@ -7,9 +9,10 @@ Voice::Voice(std::shared_ptr<IOscillatorFunction> pOscillator1
             , std::shared_ptr<modulation::IModulator> pModulator)
 : m_pEnvelope(pEnvelope)
 , m_pFilter(pFilter)
-, m_dFrequency(0.0)
+, m_fFrequency(0.0)
 , m_pOscillator1(pOscillator1)
 , m_pOscillator2(pOscillator2)
+, m_bActive(false)
 {   
     modulation::ModulationValue cutOff(0.01, 0.99);
     m_pFilterCutOff = std::make_shared<modulation::ModulationValue>(cutOff);
@@ -25,43 +28,61 @@ Voice::~Voice()
 
 }
 
-void Voice::noteOn(double dFrequency, double dTime)
+void Voice::noteOn(float fFrequency, float fTime)
 {
-    m_dFrequency = dFrequency;
-    m_pEnvelope->noteOn(dTime);
+    m_bActive = true;
+    m_fFrequency = fFrequency;
+    m_pEnvelope->noteOn(fTime);
     m_pFilter->triggerOn();
 }
 
-void Voice::noteOff(double dTime)
-{
-    m_pEnvelope->noteOff(dTime);
+void Voice::noteOff(float fTime)
+{   
+    m_pEnvelope->noteOff(fTime);
     m_pFilter->triggerOff();
 }
 
-double Voice::process(double dTime)
+float Voice::process(float fTime)
 {
-    float osc1 = (float)m_pOscillator1->calculate(m_dFrequency, dTime);
-    float osc2 = (float)m_pOscillator2->calculate(m_dFrequency, dTime);
-    float amp = (float)m_pEnvelope->getAmplitude(dTime);
+    float osc1 = (float)m_pOscillator1->calculate(m_fFrequency, fTime);
+    float osc2 = (float)m_pOscillator2->calculate(m_fFrequency, fTime);
+    float amp = (float)m_pEnvelope->getAmplitude(fTime);
+    
     m_pFilter->setCutoffFrequency(m_pFilterCutOff->getModulatedValue());
     m_pFilter->setResonance(m_pFilterResonance->getModulatedValue());
-    float filtered = m_pFilter->process( amp * (osc1 + osc2));
-                        
-    return filtered;       
+    float filtered = m_pFilter->process( amp * 0.5 * (osc1 + osc2));
+    
+    if ((m_pEnvelope->isNoteOff() && m_pEnvelope->getCurrentAmplitude() == 0.0))
+    {
+        m_bActive = false;
+    }
+    
+    return filtered;
+}
+
+void Voice::reset()
+{
+    m_pEnvelope->reset();
+    m_pFilter->reset();
 }
 
 bool Voice::isActive()
 {
-    return (m_pEnvelope->getCurrentAmplitude() != 0.0);
+    return m_bActive;
+}
+
+void Voice::setActive()
+{
+    m_bActive = true;
 }
 
 /******************************************************************************
     Setters and Getters
 ******************************************************************************/
 
-double Voice::getFrequency()
+float Voice::getFrequency()
 {
-    return m_dFrequency;
+    return m_fFrequency;
 }
 
 std::shared_ptr<IOscillatorFunction> Voice::getOscillator1()

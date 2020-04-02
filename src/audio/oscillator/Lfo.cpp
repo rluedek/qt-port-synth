@@ -1,23 +1,21 @@
 #include "audio/oscillator/Lfo.h"
 
-#include "qdebug.h"
-
 Lfo::Lfo()
-: m_dFrequency(20.0)
-, m_dAmount(0.3)
-, m_dModulationAmount(0.0)
+: m_fFrequency(20.0)
+, m_fAmount(0.3)
+, m_fModulationAmount(0.0)
 {
 
 }
 
-void Lfo::setFrequency(double dFrequency)
+void Lfo::setFrequency(float fFrequency)
 {
-    m_dFrequency = dFrequency;
+    m_fFrequency = fFrequency;
 }
 
-void Lfo::setAmount(double dAmount)
+void Lfo::setAmount(float fAmount)
 {
-    m_dAmount = dAmount;
+    m_fAmount = fAmount;
 }
 
 void Lfo::setOscillator(std::shared_ptr<IOscillatorFunction> pOscillator)
@@ -25,12 +23,12 @@ void Lfo::setOscillator(std::shared_ptr<IOscillatorFunction> pOscillator)
     m_pOscillator = pOscillator;
 }
 
-void Lfo::trigger(double dTime)
+void Lfo::trigger(float fTime)
 {
-    m_dModulationAmount = m_dAmount * (m_pOscillator.get()->calculate(dTime, m_dFrequency));
+    m_fModulationAmount = m_fAmount * (m_pOscillator.get()->calculate(fTime, m_fFrequency));
 }
 
-double Lfo::getModulationAmount()
+float Lfo::getModulationAmount()
 {
-    return m_dModulationAmount;
+    return m_fModulationAmount;
 }

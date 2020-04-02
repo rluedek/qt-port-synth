@@ -17,15 +17,18 @@ public:
     //dtor
     ~Voice();
 
-    void noteOn(double dFrequency, double dTime) override;
+    void noteOn(float fFrequency, float fTime) override;
 
-    void noteOff(double dTime) override;
+    void noteOff(float fTime) override;
 
-    double process(double dTime) override;
+    float process(float fTime) override;
+
+    void reset() override;
 
     bool isActive() override;
+    void setActive() override;
 
-    double getFrequency() override;
+    float getFrequency() override;
 
     std::shared_ptr<modulation::ModulationValue> getFilterCutOff();
     std::shared_ptr<modulation::ModulationValue> getFilterResonance();
@@ -35,7 +38,8 @@ private:
     std::shared_ptr<IOscillatorFunction> m_pOscillator2;
     IEnvelope* m_pEnvelope;
     std::shared_ptr<IFilter> m_pFilter;
-    double m_dFrequency;
+    float m_fFrequency;
+    bool m_bActive;
 
 /******************************************************************************
     Modulation

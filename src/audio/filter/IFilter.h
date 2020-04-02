@@ -7,11 +7,13 @@ public:
     virtual void triggerOn() = 0;
     virtual void triggerOff() = 0;
 
-    virtual double process(double inputValue) = 0;
+    virtual float process(float fInputValue) = 0;
+    virtual void reset() = 0;
 
-    virtual void setCutoffFrequency(double frequency) = 0;
-    virtual void setResonance(double resonance) = 0;
-    virtual double getFeedbackAmount() = 0;
+
+    virtual void setCutoffFrequency(float fFrequency) = 0;
+    virtual void setResonance(float fResonance) = 0;
+    virtual float getFeedbackAmount() = 0;
 };
 
 #endif

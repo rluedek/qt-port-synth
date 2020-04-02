@@ -15,9 +15,9 @@ class NoFilter : public IFilter
         // do nothing
     }
 
-    double process(double inputValue)
+    float process(float fInputValue)
     {
-        return inputValue;
+        return fInputValue;
     }    
 };
 

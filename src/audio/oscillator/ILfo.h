@@ -8,10 +8,10 @@
 class ILfo
 {
 public:
-    virtual void setFrequency(double dFrequency) = 0;
-    virtual void setAmount(double dAmount) = 0;
+    virtual void setFrequency(float fFrequency) = 0;
+    virtual void setAmount(float fAmount) = 0;
     virtual void setOscillator(std::shared_ptr<IOscillatorFunction> pOscillator) = 0;
 
-    virtual void trigger(double dTime) = 0;
+    virtual void trigger(float fTime) = 0;
 };
 #endif

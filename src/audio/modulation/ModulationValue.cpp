@@ -4,28 +4,28 @@
 
 namespace modulation
 {
-    ModulationValue::ModulationValue(double dMinValue, double dMaxValue)
-    : m_dValue(0.0)
-    , m_dModulatedValue(0.0)
-    , m_dMinValue(dMinValue)
-    , m_dMaxValue(dMaxValue)
+    ModulationValue::ModulationValue(float fMinValue, float fMaxValue)
+    : m_fValue(0.0)
+    , m_fModulatedValue(0.0)
+    , m_fMinValue(fMinValue)
+    , m_fMaxValue(fMaxValue)
     {
 
     }
 
-    double ModulationValue::getModulatedValue()
+    float ModulationValue::getModulatedValue()
     {
-        return fmax(fmin(m_dValue + m_pModulator->getModulationAmount(), m_dMaxValue), m_dMinValue);
+        return fmax(fmin(m_fValue + m_pModulator->getModulationAmount(), m_fMaxValue), m_fMinValue);
     }
 
-    double ModulationValue::getValue()
+    float ModulationValue::getValue()
     {
-        return m_dValue;
+        return m_fValue;
     }
 
-    void ModulationValue::setValue(double dValue)
+    void ModulationValue::setValue(float fValue)
     {
-        m_dValue = dValue;
+        m_fValue = fValue;
     }
 
     void ModulationValue::setModulator(std::shared_ptr<IModulator> pModulator)

@@ -96,7 +96,7 @@ void AudioHal::open()
     }
 }
 
-void AudioHal::play(double frequency)
+void AudioHal::play(float frequency)
 {
     m_frequency = frequency;
     
@@ -107,7 +107,7 @@ void AudioHal::play(double frequency)
     }
  }
 
-void AudioHal::stop(double frequency)
+void AudioHal::stop(float frequency)
 {
     if (m_pVoiceManager)
     {
@@ -150,7 +150,7 @@ int AudioHal::paUserCallback(    const void *inputBuffer, void *outputBuffer,
 SETTER AND GETTER
 */
 
-double AudioHal::getGlobalTime()
+float AudioHal::getGlobalTime()
 {
     return m_globalTime;
 }

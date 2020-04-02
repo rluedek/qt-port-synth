@@ -5,9 +5,9 @@
 
 class NoOscillator : public IOscillatorFunction
 {
-   double calculate(double& time, double frequency) override
+   float calculate(float& fTime, float fFrequency) override
    {
-       return 0;
+       return 0.0;
    }
 };
 

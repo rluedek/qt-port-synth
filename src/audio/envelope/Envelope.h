@@ -12,36 +12,40 @@ public:
     //dtor
     virtual ~Envelope();
 
-    void noteOn(double dTime) override;
-    void noteOff(double dTime) override;
-    double getAmplitude(double dTime) override;
-    double getCurrentAmplitude() override;
+    void noteOn(float fTime) override;
+    void noteOff(float fTime) override;
+    float getAmplitude(float fTime) override;
+    float getCurrentAmplitude() override;
+    void reset() override;
 
-    bool setAttackTime(double dAttackTime) override;
-    double getAttackTime() override;
 
-    bool setDecayTime(double dDecayTime) override;
+    bool setAttackTime(float fAttackTime) override;
+    float getAttackTime() override;
 
-    bool setReleaseTime(double dReleaseTime) override;
-    double getReleaseTime() override;
+    bool setDecayTime(float fDecayTime) override;
 
-    bool setSustainAmplitude(double dSustainAmplitude) override;
+    bool setReleaseTime(float fReleaseTime) override;
+    float getReleaseTime() override;
+
+    bool setSustainAmplitude(float fSustainAmplitude) override;
+
+    bool isNoteOff() override;
+
+
 private:
-
-    double m_dAttackTime;
-    double m_dDecayTime;
-    double m_dReleaseTime;
-    double m_dActualSustainAmplitude;
-    double m_dSustainAmplitude;
-    double m_dStartAmplitude;
-    double m_dTimeNoteOn;
-    double m_dTimeNoteOff;
-	double m_dTriggerOffTime;
-	double m_dTriggerOnTime;
-    double m_dCurrentAmplitude;
+    float m_fAttackTime;
+    float m_fDecayTime;
+    float m_fReleaseTime;
+    float m_fActualSustainAmplitude;
+    float m_fSustainAmplitude;
+    float m_fStartAmplitude;
+    float m_fTimeNoteOn;
+    float m_fTimeNoteOff;
+	float m_fTriggerOffTime;
+	float m_fTriggerOnTime;
+    float m_fCurrentAmplitude;
     
     bool m_bNoteOn;
-
 };
 
 #endif

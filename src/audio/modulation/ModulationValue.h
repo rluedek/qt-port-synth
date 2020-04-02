@@ -10,21 +10,21 @@ namespace modulation
     class ModulationValue
     {
     public:
-        ModulationValue(double dMinValue, double dMaxValue);
+        ModulationValue(float fMinValue, float fMaxValue);
 
-        double getModulatedValue();
+        float getModulatedValue();
 
-        double getValue();
-        void setValue(double);
+        float getValue();
+        void setValue(float);
 
         void setModulator(std::shared_ptr<IModulator> pModulator);
     
 
     private:
-        double m_dValue;
-        double m_dModulatedValue;
-        double m_dMinValue;
-        double m_dMaxValue;
+        float m_fValue;
+        float m_fModulatedValue;
+        float m_fMinValue;
+        float m_fMaxValue;
         
         std::shared_ptr<modulation::IModulator> m_pModulator;
     };
