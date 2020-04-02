@@ -203,7 +203,19 @@ void VoiceManager::setResonance(int resonance)
         if(pVoice)
         {   
             pVoice->getFilterResonance()->setValue(resonance / 1000.0);
-            //pVoice->getFilter()->setResonance(resonance / 1000.0);
+        }
+    }
+}
+
+void VoiceManager::setOscillatorMix(int mix)
+{
+    for (int i = 0; i < NumberOfVoices; i++)
+    {
+        IVoice* pVoice = voices[i];
+        
+        if(pVoice)
+        {   
+            pVoice->setOscillationMix(mix / 1000.0);
         }
     }
 }
@@ -228,4 +240,3 @@ void VoiceManager::setLfoOscillator(std::shared_ptr<IOscillatorFunction> func)
 {
     m_pLfo->setOscillator(func);
 }
-    

@@ -73,7 +73,14 @@ MainWindow::MainWindow(QWidget *parent, AudioHal* hal, VoiceManager* pVoiceManag
     ui->FilterLFORateKnob->setSingleStep(10);
     connect(ui->FilterLFORateKnob, &QDial::valueChanged,
         m_manager, &VoiceManager::setLfoFrequency);
-    
+
+    ui->MixSlider->setValue(500);
+    ui->MixSlider->setMinimum(0);
+    ui->MixSlider->setMaximum(1000);
+    ui->MixSlider->setSingleStep(10);
+    connect(ui->MixSlider, &QSlider::valueChanged,
+        m_manager, &VoiceManager::setOscillatorMix);
+
 
     connect(ui->RadioButton_Osc1_Sinus, &QRadioButton::clicked,
             this, &MainWindow::radioButton_Osc1_Sinus);

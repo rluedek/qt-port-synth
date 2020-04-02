@@ -38,6 +38,8 @@ public:
     virtual std::shared_ptr<IFilter> getFilter() = 0;
     virtual void setFilter(std::shared_ptr<IFilter> pFilter) = 0;
 
+    virtual void setOscillationMix(float fMix) = 0;
+
     virtual std::shared_ptr<modulation::ModulationValue> getFilterCutOff() = 0;
     virtual std::shared_ptr<modulation::ModulationValue> getFilterResonance() = 0;
 

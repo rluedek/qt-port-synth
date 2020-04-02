@@ -10,6 +10,7 @@ Voice::Voice(std::shared_ptr<IOscillatorFunction> pOscillator1
 : m_pEnvelope(pEnvelope)
 , m_pFilter(pFilter)
 , m_fFrequency(0.0)
+, m_fMix(0.5)
 , m_pOscillator1(pOscillator1)
 , m_pOscillator2(pOscillator2)
 , m_bActive(false)
@@ -50,7 +51,7 @@ float Voice::process(float fTime)
     
     m_pFilter->setCutoffFrequency(m_pFilterCutOff->getModulatedValue());
     m_pFilter->setResonance(m_pFilterResonance->getModulatedValue());
-    float filtered = m_pFilter->process( amp * 0.5 * (osc1 + osc2));
+    float filtered = m_pFilter->process( amp * (((1.0 - m_fMix) * osc1 + m_fMix * osc2)));
     
     if ((m_pEnvelope->isNoteOff() && m_pEnvelope->getCurrentAmplitude() == 0.0))
     {
@@ -123,6 +124,11 @@ std::shared_ptr<IFilter> Voice::getFilter()
 void Voice::setFilter(std::shared_ptr<IFilter> pFilter)
 {
     m_pFilter = pFilter;
+}
+
+void Voice::setOscillationMix(float fMix)
+{
+    m_fMix = fMix;
 }
 
 std::shared_ptr<modulation::ModulationValue> Voice::getFilterCutOff()

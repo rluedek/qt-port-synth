@@ -24,6 +24,7 @@ public:
     //Oscillators
     void setOscillator1(std::shared_ptr<IOscillatorFunction> func);
     void setOscillator2(std::shared_ptr<IOscillatorFunction> func);
+    void setOscillatorMix(int mix);
         
     // Envelope
     void setEnvelopeAttackTime(int dAttackTime);

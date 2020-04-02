@@ -39,6 +39,7 @@ private:
     IEnvelope* m_pEnvelope;
     std::shared_ptr<IFilter> m_pFilter;
     float m_fFrequency;
+    float m_fMix;
     bool m_bActive;
 
 /******************************************************************************
@@ -62,6 +63,8 @@ private:
     
     std::shared_ptr<IFilter> getFilter() override;
     void setFilter(std::shared_ptr<IFilter> pFilter) override;
+
+    void setOscillationMix(float fMix);
 };
 
 #endif
