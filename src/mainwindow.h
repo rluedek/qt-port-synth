@@ -58,10 +58,17 @@ private:
     void radioButton_Osc1_Sinus();
     void radioButton_Osc1_Square();
     void radioButton_Osc1_Triangle();
+    void radioButton_Osc1_Saw();
 
     void radioButton_Osc2_Sinus();
     void radioButton_Osc2_Square();
     void radioButton_Osc2_Triangle();
+    void radioButton_Osc2_Saw();
+
+    void radioButton_Lfo_Sinus();
+    void radioButton_Lfo_Square();
+    void radioButton_Lfo_Triangle();
+    void radioButton_Lfo_Saw();
 
     void octaveUp();
     void octaveDown();

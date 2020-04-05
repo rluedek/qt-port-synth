@@ -46,5 +46,16 @@ public:
     float calculate(float& fTime, float fFrequency) override;
 };
 
+class Saw : public IOscillatorFunction
+{
+public:
+    //ctor
+    Saw();
+
+    //dtor
+    virtual ~Saw();
+  
+    float calculate(float& fTime, float fFrequency) override;
+};
 
 #endif

@@ -94,6 +94,10 @@ MainWindow::MainWindow(QWidget *parent, AudioHal* hal, VoiceManager* pVoiceManag
             this, &MainWindow::radioButton_Osc1_Triangle);
 
 
+    connect(ui->RadioButton_Osc1_Saw, &QRadioButton::clicked,
+            this, &MainWindow::radioButton_Osc1_Saw);
+
+
     connect(ui->RadioButton_Osc2_Sinus, &QRadioButton::clicked,
             this, &MainWindow::radioButton_Osc2_Sinus);
     
@@ -105,10 +109,32 @@ MainWindow::MainWindow(QWidget *parent, AudioHal* hal, VoiceManager* pVoiceManag
     connect(ui->RadioButton_Osc2_Triangle, &QRadioButton::clicked,
             this, &MainWindow::radioButton_Osc2_Triangle);
 
+
+    connect(ui->RadioButton_Osc2_Saw, &QRadioButton::clicked,
+            this, &MainWindow::radioButton_Osc2_Saw);
+
+
+
+    
+    connect(ui->FilterLFOSinButton, &QRadioButton::clicked,
+            this, &MainWindow::radioButton_Lfo_Sinus);
+    
+    
+    connect(ui->FilterLFOSqrButton, &QRadioButton::clicked,
+            this, &MainWindow::radioButton_Lfo_Square);
+
+
+    connect(ui->FilterLFOTriButton, &QRadioButton::clicked,
+            this, &MainWindow::radioButton_Lfo_Triangle);
+
+
+    connect(ui->FilterLFOSawButton, &QRadioButton::clicked,
+            this, &MainWindow::radioButton_Lfo_Saw);
+
+
     connect(ui->Button_Octave_Down, &QAbstractButton::pressed,
             this, &MainWindow::octaveDown);
     
-
     connect(ui->Button_Octave_UP, &QAbstractButton::pressed,
             this, &MainWindow::octaveUp);
 
@@ -182,6 +208,12 @@ void MainWindow::radioButton_Osc1_Triangle()
     m_manager->setOscillator1(std::make_shared<Triangle>(temp));
 }
 
+void MainWindow::radioButton_Osc1_Saw()
+{
+    Saw temp;
+    m_manager->setOscillator1(std::make_shared<Saw>(temp));
+}
+
 void MainWindow::radioButton_Osc2_Sinus()
 {
     Sine temp;
@@ -194,10 +226,40 @@ void MainWindow::radioButton_Osc2_Square()
     m_manager->setOscillator2(std::make_shared<Square>(temp));
 }
 
+void MainWindow::radioButton_Osc2_Saw()
+{
+    Saw temp;
+    m_manager->setOscillator1(std::make_shared<Saw>(temp));
+}
+
 void MainWindow::radioButton_Osc2_Triangle()
 {
     Triangle temp;
     m_manager->setOscillator2(std::make_shared<Triangle>(temp));
+}
+
+void MainWindow::radioButton_Lfo_Sinus()
+{
+    Sine temp;
+    m_manager->setLfoOscillator(std::make_shared<Sine>(temp));
+}
+
+void MainWindow::radioButton_Lfo_Square()
+{
+    Square temp;
+    m_manager->setLfoOscillator(std::make_shared<Square>(temp));
+}
+
+void MainWindow::radioButton_Lfo_Triangle()
+{
+    Triangle temp;
+    m_manager->setLfoOscillator(std::make_shared<Triangle>(temp));
+}
+
+void MainWindow::radioButton_Lfo_Saw()
+{
+    Saw temp;
+    m_manager->setLfoOscillator(std::make_shared<Saw>(temp));
 }
 
 void MainWindow::octaveUp()

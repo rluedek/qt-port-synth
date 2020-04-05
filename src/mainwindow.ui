@@ -92,7 +92,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QRadioButton" name="FilterLFOPlsButton">
+        <widget class="QRadioButton" name="FilterLFOSqrButton">
          <property name="enabled">
           <bool>true</bool>
          </property>
@@ -102,7 +102,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QRadioButton" name="FilterLFOriButton">
+        <widget class="QRadioButton" name="FilterLFOTriButton">
          <property name="text">
           <string>tri</string>
          </property>

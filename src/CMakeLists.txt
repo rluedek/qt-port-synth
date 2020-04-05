@@ -32,6 +32,7 @@ add_executable(qt-port-synth
   audio/Audio.cpp
   audio/Sine.cpp
   audio/Square.cpp
+  audio/Saw.cpp
   audio/Triangle.cpp
   audio/oscillator/Lfo.cpp
   audio/envelope/Envelope.cpp
