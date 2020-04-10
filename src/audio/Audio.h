@@ -41,6 +41,8 @@ public:
 
     void setVoiceManager(VoiceManager* pVoicemanager);
 
+    void setVolume(int Volume);
+
     /*STATIC*/
     static int paCallback( const void *inputBuffer, void *outputBuffer,
         unsigned long framesPerBuffer,
@@ -59,8 +61,8 @@ private:
 
     static int m_sDefaultDeviceNumber;
 
-    float m_priorFreq;
     float m_frequency;
+    float m_fMasterVolume;
     float m_globalTime;
 
     VoiceManager* m_pVoiceManager;

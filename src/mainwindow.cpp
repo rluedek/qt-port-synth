@@ -3,6 +3,10 @@
 #include <QGuiApplication>
 #include <QScreen>
 
+#include "audio/filter/HighpassFilter.h"
+#include "audio/filter/LowpassFilter.h"
+#include "audio/filter/BandpassFilter.h"
+
 #include "ui_mainwindow.h"
 #include "qdebug.h"
 
@@ -78,6 +82,15 @@ MainWindow::MainWindow(QWidget *parent, AudioHal* hal, VoiceManager* pVoiceManag
     connect(ui->MixSlider, &QSlider::valueChanged,
         m_manager, &VoiceManager::setOscillatorMix);
 
+    ui->VolumeGainKnob->setValue(0);
+    ui->VolumeGainKnob->setMaximum(1000);
+    ui->VolumeGainKnob->setMinimum(0);
+    ui->VolumeGainKnob->setSingleStep(1);
+
+
+    connect(ui->VolumeGainKnob, &QDial::valueChanged,
+        m_hal, &AudioHal::setVolume);
+
 
     connect(ui->RadioButton_Osc1_Sinus, &QRadioButton::clicked,
             this, &MainWindow::radioButton_Osc1_Sinus);
@@ -129,9 +142,24 @@ MainWindow::MainWindow(QWidget *parent, AudioHal* hal, VoiceManager* pVoiceManag
 
     connect(ui->Button_Octave_Down, &QAbstractButton::pressed,
             this, &MainWindow::octaveDown);
-    
+
+
     connect(ui->Button_Octave_UP, &QAbstractButton::pressed,
             this, &MainWindow::octaveUp);
+
+
+    connect(ui->BpButton, &QAbstractButton::pressed,
+            this, &MainWindow::setFilterBP);
+
+
+    connect(ui->HpButton, &QAbstractButton::pressed,
+            this, &MainWindow::setFilterHP);
+
+
+    connect(ui->LpButton, &QAbstractButton::pressed,
+            this, &MainWindow::setFilterLP);
+
+
 
     // get screen resolution and set window to maximum screen size
     QScreen *screen = QGuiApplication::primaryScreen();
@@ -157,7 +185,6 @@ void MainWindow::keyPressEvent(QKeyEvent* event)
     else
     {
         double frequency = keyNumberToFrequency(m_pianoKeys[event->key()]);
-        qDebug() << "Frequency: " << frequency;
         m_hal->play(frequency);
     }
     
@@ -259,6 +286,24 @@ void MainWindow::octaveDown()
 {
     if (m_dOctaveOsc > -4)
         m_dOctaveOsc--;
+}
+
+void MainWindow::setFilterBP()
+{
+    BandpassFilter filter;
+    m_manager->setFilter(std::make_shared<BandpassFilter>(filter));
+}
+
+void MainWindow::setFilterHP()
+{
+    HighpassFilter filter;
+    m_manager->setFilter(std::make_shared<HighpassFilter>(filter));
+}
+
+void MainWindow::setFilterLP()
+{
+    LowpassFilter filter;
+    m_manager->setFilter(std::make_shared<LowpassFilter>(filter));
 }
 
 double MainWindow::keyNumberToFrequency(unsigned keynumber)

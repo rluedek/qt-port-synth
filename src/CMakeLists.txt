@@ -38,6 +38,8 @@ add_executable(qt-port-synth
   audio/envelope/Envelope.cpp
   audio/envelope/NoEnvelope.h
   audio/filter/LowpassFilter.cpp
+  audio/filter/HighpassFilter.cpp
+  audio/filter/BandpassFilter.cpp
   audio/filter/NoFilter.h
   audio/voice/Voice.cpp
   audio/voicemanager/VoiceManager.cpp

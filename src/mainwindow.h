@@ -73,6 +73,10 @@ private:
 
     void octaveUp();
     void octaveDown();
+
+    void setFilterBP();
+    void setFilterHP();
+    void setFilterLP();
     
 protected:
     void keyPressEvent(QKeyEvent* event);

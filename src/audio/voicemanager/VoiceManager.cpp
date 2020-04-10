@@ -189,7 +189,6 @@ void VoiceManager::setCutOffFrequency(int frequency)
         if(pVoice)
         {
             pVoice->getFilterCutOff()->setValue(frequency / 1000.0);
-            //pVoice->getFilter()->setCutoffFrequency(frequency / 1000.0);
         }
     }
 }

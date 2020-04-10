@@ -8,8 +8,8 @@ int AudioHal::m_sDefaultDeviceNumber = -1;
 
 //ctor
 AudioHal::AudioHal()
-: m_priorFreq(0.0)
-, m_frequency(0.0)
+: m_frequency(0.0)
+, m_fMasterVolume(0.0)
 , stream(0)
 , left_phase(0)
 , right_phase(0)
@@ -77,7 +77,7 @@ void AudioHal::open()
               &outputParameters,
               SAMPLE_RATE,
               FRAMES_PER_BUFFER,
-              paClipOff,      /* we won't output out of range samples so don't bother clipping them */
+              paNoFlag,//paClipOff,      /* we won't output out of range samples so don't bother clipping them */
               &AudioHal::paCallback,
               this );
 
@@ -133,8 +133,8 @@ int AudioHal::paUserCallback(    const void *inputBuffer, void *outputBuffer,
     {
         float value = m_pVoiceManager->getSample(m_globalTime);
 
-        *out++ = 0.2 * value;  /* left */
-        *out++ = 0.2 * value;  /* right */
+        *out++ = m_fMasterVolume * value;  /* left */
+        *out++ = m_fMasterVolume * value;  /* right */
 
         m_globalTime += TIME_STEP;
         if (m_globalTime >= SAMPLE_RATE)
@@ -158,4 +158,9 @@ float AudioHal::getGlobalTime()
 void AudioHal::setVoiceManager(VoiceManager* pVoicemanager)
 {
     m_pVoiceManager = pVoicemanager;
+}
+
+void AudioHal::setVolume(int volume)
+{
+    m_fMasterVolume = volume / 100.0;
 }
