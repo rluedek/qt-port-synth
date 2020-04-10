@@ -11,8 +11,7 @@ MainWindow::MainWindow(QWidget *parent, AudioHal* hal, VoiceManager* pVoiceManag
     , m_hal(hal)
     , m_manager(pVoiceManager)
     , ui(new Ui::MainWindow)
-    , m_dOctaveOsc1(0.0)
-    , m_dOctaveOsc2(0.0)
+    , m_dOctaveOsc(0.0)
 {
     ui->setupUi(this);
 
@@ -150,9 +149,7 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::keyPressEvent(QKeyEvent* event)
-{ 
-    //this->grabKeyboard();
-
+{
     if (event->isAutoRepeat())
     {
         event->ignore();
@@ -254,19 +251,19 @@ void MainWindow::radioButton_Lfo_Saw()
 
 void MainWindow::octaveUp()
 {
-    if (m_dOctaveOsc1 < 4)
-        m_dOctaveOsc1++;
+    if (m_dOctaveOsc < 4)
+        m_dOctaveOsc++;
 }
 
 void MainWindow::octaveDown()
 {
-    if (m_dOctaveOsc1 > -4)
-        m_dOctaveOsc1--;
+    if (m_dOctaveOsc > -4)
+        m_dOctaveOsc--;
 }
 
 double MainWindow::keyNumberToFrequency(unsigned keynumber)
 {
-    keynumber += (12 * m_dOctaveOsc1);
+    keynumber += (12 * m_dOctaveOsc);
     qDebug() << keynumber << endl; 
     return 440.0 * pow(2.0, (keynumber - 69.0) / 12.0);
 }

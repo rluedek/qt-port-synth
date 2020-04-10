@@ -33,8 +33,7 @@ private:
 
     double m_dBaseFrequencyOsc1;
     double m_dBaseFrequencyOsc2;
-    double m_dOctaveOsc1;
-    double m_dOctaveOsc2;
+    double m_dOctaveOsc;
 
     Square m_square;
     Sine m_sine;
