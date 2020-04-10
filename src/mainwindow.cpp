@@ -11,10 +11,8 @@ MainWindow::MainWindow(QWidget *parent, AudioHal* hal, VoiceManager* pVoiceManag
     , m_hal(hal)
     , m_manager(pVoiceManager)
     , ui(new Ui::MainWindow)
-    , m_dBaseFrequencyOsc1(110.0)
-    , m_dBaseFrequencyOsc2(110.0)
-    , m_dOctaveOsc1(4.0)
-    , m_dOctaveOsc2(4.0)
+    , m_dOctaveOsc1(0.0)
+    , m_dOctaveOsc2(0.0)
 {
     ui->setupUi(this);
 
@@ -161,16 +159,6 @@ void MainWindow::keyPressEvent(QKeyEvent* event)
     }
     else
     {
-        /*
-        double d12thRootOf2 = pow(2.0, 1.0 / 12.0);
-
-        double frequency = ceil(m_dBaseFrequencyOsc1 * m_dOctaveOsc1 * pow(d12thRootOf2, m_pianoKeys[event->key()]));
-
-        qDebug() << "Frequency: " << frequency;
-
-        m_hal->play(frequency);
-        */
-
         double frequency = keyNumberToFrequency(m_pianoKeys[event->key()]);
         qDebug() << "Frequency: " << frequency;
         m_hal->play(frequency);
@@ -186,13 +174,6 @@ void MainWindow::keyReleaseEvent(QKeyEvent* event)
     }
     else
     {
-        /*
-        double d12thRootOf2 = pow(2.0, 1.0 / 12.0);
-
-        double frequency = ceil(m_dBaseFrequencyOsc1 * pow(d12thRootOf2, m_pianoKeys[event->key()]));
-
-        m_hal->stop(frequency);
-        */
         double frequency = keyNumberToFrequency(m_pianoKeys[event->key()]);
         qDebug() << "Frequency: " << frequency;
         m_hal->stop(frequency);
@@ -273,13 +254,13 @@ void MainWindow::radioButton_Lfo_Saw()
 
 void MainWindow::octaveUp()
 {
-    if (m_dOctaveOsc1 < 80)
+    if (m_dOctaveOsc1 < 4)
         m_dOctaveOsc1++;
 }
 
 void MainWindow::octaveDown()
 {
-    if (m_dOctaveOsc1 > 0)
+    if (m_dOctaveOsc1 > -4)
         m_dOctaveOsc1--;
 }
 
