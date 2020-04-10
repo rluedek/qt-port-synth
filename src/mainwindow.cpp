@@ -113,8 +113,6 @@ MainWindow::MainWindow(QWidget *parent, AudioHal* hal, VoiceManager* pVoiceManag
     connect(ui->RadioButton_Osc2_Saw, &QRadioButton::clicked,
             this, &MainWindow::radioButton_Osc2_Saw);
 
-
-
     
     connect(ui->FilterLFOSinButton, &QRadioButton::clicked,
             this, &MainWindow::radioButton_Lfo_Sinus);
@@ -163,12 +161,18 @@ void MainWindow::keyPressEvent(QKeyEvent* event)
     }
     else
     {
+        /*
         double d12thRootOf2 = pow(2.0, 1.0 / 12.0);
 
         double frequency = ceil(m_dBaseFrequencyOsc1 * m_dOctaveOsc1 * pow(d12thRootOf2, m_pianoKeys[event->key()]));
 
         qDebug() << "Frequency: " << frequency;
 
+        m_hal->play(frequency);
+        */
+
+        double frequency = keyNumberToFrequency(m_pianoKeys[event->key()]);
+        qDebug() << "Frequency: " << frequency;
         m_hal->play(frequency);
     }
     
@@ -182,10 +186,15 @@ void MainWindow::keyReleaseEvent(QKeyEvent* event)
     }
     else
     {
+        /*
         double d12thRootOf2 = pow(2.0, 1.0 / 12.0);
 
-        double frequency = ceil(m_dBaseFrequencyOsc1 * m_dOctaveOsc1 * pow(d12thRootOf2, m_pianoKeys[event->key()]));
+        double frequency = ceil(m_dBaseFrequencyOsc1 * pow(d12thRootOf2, m_pianoKeys[event->key()]));
 
+        m_hal->stop(frequency);
+        */
+        double frequency = keyNumberToFrequency(m_pianoKeys[event->key()]);
+        qDebug() << "Frequency: " << frequency;
         m_hal->stop(frequency);
     }
 }
@@ -229,7 +238,7 @@ void MainWindow::radioButton_Osc2_Square()
 void MainWindow::radioButton_Osc2_Saw()
 {
     Saw temp;
-    m_manager->setOscillator1(std::make_shared<Saw>(temp));
+    m_manager->setOscillator2(std::make_shared<Saw>(temp));
 }
 
 void MainWindow::radioButton_Osc2_Triangle()
@@ -272,4 +281,11 @@ void MainWindow::octaveDown()
 {
     if (m_dOctaveOsc1 > 0)
         m_dOctaveOsc1--;
+}
+
+double MainWindow::keyNumberToFrequency(unsigned keynumber)
+{
+    keynumber += (12 * m_dOctaveOsc1);
+    qDebug() << keynumber << endl; 
+    return 440.0 * pow(2.0, (keynumber - 69.0) / 12.0);
 }

@@ -41,18 +41,18 @@ private:
     Triangle m_triangle;
 
     // YSXCFVGBNJMK
-    std::map<int, int> m_pianoKeys = {   {Qt::Key_Y, 0}
-                                        , {Qt::Key_S, 1}
-                                        , {Qt::Key_X, 2}
-                                        , {Qt::Key_C, 3}
-                                        , {Qt::Key_F, 4}
-                                        , {Qt::Key_V, 5}
-                                        , {Qt::Key_G, 6}
-                                        , {Qt::Key_B, 7}
-                                        , {Qt::Key_N, 8}
-                                        , {Qt::Key_J, 9}
-                                        , {Qt::Key_M, 10}
-                                        , {Qt::Key_K, 11}
+    std::map<int, int> m_pianoKeys = {    {Qt::Key_Y, 69}
+                                        , {Qt::Key_S, 70}
+                                        , {Qt::Key_X, 71}
+                                        , {Qt::Key_C, 72}
+                                        , {Qt::Key_F, 73}
+                                        , {Qt::Key_V, 74}
+                                        , {Qt::Key_G, 75}
+                                        , {Qt::Key_B, 76}
+                                        , {Qt::Key_N, 77}
+                                        , {Qt::Key_J, 78}
+                                        , {Qt::Key_M, 79}
+                                        , {Qt::Key_K, 80}
                                     };
 
     void radioButton_Osc1_Sinus();
@@ -69,6 +69,8 @@ private:
     void radioButton_Lfo_Square();
     void radioButton_Lfo_Triangle();
     void radioButton_Lfo_Saw();
+
+    inline double keyNumberToFrequency(unsigned keynumber);
 
     void octaveUp();
     void octaveDown();
