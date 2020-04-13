@@ -12,7 +12,8 @@ public:
         , std::shared_ptr<IOscillatorFunction> pOscillator2
         , IEnvelope* pEnvelope
         , std::shared_ptr<IFilter> pFilter
-        , std::shared_ptr<modulation::IModulator> pModulator);
+        , std::shared_ptr<modulation::IModulator> pModulator
+        , std::shared_ptr<IEnvelope> pGlobalEnvelope);
 
     //dtor
     ~Voice();
@@ -38,6 +39,7 @@ private:
     std::shared_ptr<IOscillatorFunction> m_pOscillator2;
     IEnvelope* m_pEnvelope;
     std::shared_ptr<IFilter> m_pFilter;
+    std::shared_ptr<IEnvelope> m_pGlobalEnvelope;
     float m_fFrequency;
     float m_fMix;
     bool m_bActive;
@@ -60,9 +62,11 @@ private:
 
     IEnvelope* getEnvelope() override;
     void setEnvelope(IEnvelope* pEnvelope) override;
+
+    std::shared_ptr<IEnvelope> getGlobalEnvelope() override;
     
     std::shared_ptr<IFilter> getFilter() override;
-    void setFilter(std::shared_ptr<IFilter> pFilter) override;
+    void setFilter(FilterType type);
 
     void setOscillationMix(float fMix);
 };

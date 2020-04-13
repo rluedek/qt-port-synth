@@ -1,4 +1,8 @@
 #include "Voice.h"
+#include "audio/filter/HighpassFilter.h"
+#include "audio/filter/LowpassFilter.h"
+#include "audio/filter/BandpassFilter.h"
+
 
 #include <iostream>
 
@@ -6,8 +10,10 @@ Voice::Voice(std::shared_ptr<IOscillatorFunction> pOscillator1
             , std::shared_ptr<IOscillatorFunction> pOscillator2
             , IEnvelope* pEnvelope
             , std::shared_ptr<IFilter> pFilter
-            , std::shared_ptr<modulation::IModulator> pModulator)
+            , std::shared_ptr<modulation::IModulator> pModulator
+            , std::shared_ptr<IEnvelope> pGlobalEnvelope)
 : m_pEnvelope(pEnvelope)
+, m_pGlobalEnvelope(pGlobalEnvelope)
 , m_pFilter(pFilter)
 , m_fFrequency(0.0)
 , m_fMix(0.5)
@@ -18,10 +24,12 @@ Voice::Voice(std::shared_ptr<IOscillatorFunction> pOscillator1
     modulation::ModulationValue cutOff(0.01, 0.99);
     m_pFilterCutOff = std::make_shared<modulation::ModulationValue>(cutOff);
     m_pFilterCutOff->setModulator(pModulator);
+    m_pFilterCutOff->setEnvelopeModulator(pGlobalEnvelope);
 
     modulation::ModulationValue resonance(0.01, 0.99);
     m_pFilterResonance = std::make_shared<modulation::ModulationValue>(resonance);
     m_pFilterResonance->setModulator(pModulator);
+    m_pFilterResonance->setEnvelopeModulator(pGlobalEnvelope);
 }
 
 Voice::~Voice()
@@ -34,12 +42,14 @@ void Voice::noteOn(float fFrequency, float fTime)
     m_bActive = true;
     m_fFrequency = fFrequency;
     m_pEnvelope->noteOn(fTime);
+    m_pGlobalEnvelope->noteOn(fTime);
     m_pFilter->triggerOn();
 }
 
 void Voice::noteOff(float fTime)
 {   
     m_pEnvelope->noteOff(fTime);
+    m_pGlobalEnvelope->noteOff(fTime);
     m_pFilter->triggerOff();
 }
 
@@ -49,8 +59,8 @@ float Voice::process(float fTime)
     float osc2 = (float)m_pOscillator2->calculate(m_fFrequency, fTime);
     float amp = (float)m_pEnvelope->getAmplitude(fTime);
     
-    m_pFilter->setCutoffFrequency(m_pFilterCutOff->getModulatedValue());
-    m_pFilter->setResonance(m_pFilterResonance->getModulatedValue());
+    m_pFilter->setCutoffFrequency(m_pFilterCutOff->getModulatedValue(fTime));
+    m_pFilter->setResonance(m_pFilterResonance->getModulatedValue(fTime));
     float filtered = m_pFilter->process( amp * (((1.0 - m_fMix) * osc1 + m_fMix * osc2)));
     
     if ((m_pEnvelope->isNoteOff() && m_pEnvelope->getCurrentAmplitude() == 0.0))
@@ -64,6 +74,7 @@ float Voice::process(float fTime)
 void Voice::reset()
 {
     m_pEnvelope->reset();
+    m_pGlobalEnvelope->reset();
     m_pFilter->reset();
 }
 
@@ -116,14 +127,32 @@ void Voice::setEnvelope(IEnvelope* pEnvelope)
     m_pEnvelope = pEnvelope;
 }
 
+std::shared_ptr<IEnvelope> Voice::getGlobalEnvelope()
+{
+    return m_pGlobalEnvelope;
+}
+    
+
 std::shared_ptr<IFilter> Voice::getFilter()
 {
     return m_pFilter;
 }
 
-void Voice::setFilter(std::shared_ptr<IFilter> pFilter)
+void Voice::setFilter(FilterType type)
 {
-    m_pFilter = pFilter;
+    
+    switch (type)
+    {
+        case FilterType::LOWPASS:
+            m_pFilter = std::make_shared<LowpassFilter>();
+        break;
+        case FilterType::HIGHPASS:
+            m_pFilter = std::make_shared<HighpassFilter>();
+        break;
+        case FilterType::BANDPASS:
+            m_pFilter = std::make_shared<BandpassFilter>();
+        break;
+    }
 }
 
 void Voice::setOscillationMix(float fMix)

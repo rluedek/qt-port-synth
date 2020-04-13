@@ -2,6 +2,7 @@
 #define ENVELOPE_H
 
 #include "audio/envelope/IEnvelope.h"
+#include "audio/modulation/IModulator.h"
 
 class Envelope : public IEnvelope
 {
@@ -17,7 +18,6 @@ public:
     float getAmplitude(float fTime) override;
     float getCurrentAmplitude() override;
     void reset() override;
-
 
     bool setAttackTime(float fAttackTime) override;
     float getAttackTime() override;

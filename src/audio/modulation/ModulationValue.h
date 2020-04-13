@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "IModulator.h"
+#include "audio/envelope/IEnvelope.h"
 
 namespace modulation
 {
@@ -12,21 +13,21 @@ namespace modulation
     public:
         ModulationValue(float fMinValue, float fMaxValue);
 
-        float getModulatedValue();
+        float getModulatedValue(float fTime);
 
         float getValue();
         void setValue(float);
 
         void setModulator(std::shared_ptr<IModulator> pModulator);
-    
+        void setEnvelopeModulator(std::shared_ptr<IEnvelope> pEnvelopeModulator);
 
     private:
         float m_fValue;
-        float m_fModulatedValue;
         float m_fMinValue;
         float m_fMaxValue;
         
         std::shared_ptr<modulation::IModulator> m_pModulator;
+        std::shared_ptr<IEnvelope> m_pEnvelopeGenerator;
     };
 }
 

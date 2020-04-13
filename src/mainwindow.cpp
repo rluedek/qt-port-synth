@@ -3,9 +3,7 @@
 #include <QGuiApplication>
 #include <QScreen>
 
-#include "audio/filter/HighpassFilter.h"
-#include "audio/filter/LowpassFilter.h"
-#include "audio/filter/BandpassFilter.h"
+#include "audio/filter/FilterTypes.h"
 
 #include "ui_mainwindow.h"
 #include "qdebug.h"
@@ -46,6 +44,34 @@ MainWindow::MainWindow(QWidget *parent, AudioHal* hal, VoiceManager* pVoiceManag
     ui->VolumeReleaseKnob->setSingleStep(10);
     connect(ui->VolumeReleaseKnob, &QDial::valueChanged,
         m_manager, &VoiceManager::setEnvelopeReleaseTime);
+
+    ui->FilterEnvelopeAttackKnob->setValue(0);
+    ui->FilterEnvelopeAttackKnob->setMaximum(990);
+    ui->FilterEnvelopeAttackKnob->setMinimum(1);
+    ui->FilterEnvelopeAttackKnob->setSingleStep(10);
+    connect(ui->FilterEnvelopeAttackKnob, &QDial::valueChanged,
+        m_manager, &VoiceManager::setGlobalEnvelopeAttackTime);
+
+    ui->FilterDecayKnob->setValue(0);
+    ui->FilterDecayKnob->setMaximum(990);
+    ui->FilterDecayKnob->setMinimum(1);
+    ui->FilterDecayKnob->setSingleStep(10);
+    connect(ui->FilterDecayKnob, &QDial::valueChanged,
+        m_manager, &VoiceManager::setGlobalEnvelopeDecayTime);
+
+    ui->FilterSustainKnob->setValue(0);
+    ui->FilterSustainKnob->setMaximum(990);
+    ui->FilterSustainKnob->setMinimum(1);
+    ui->FilterSustainKnob->setSingleStep(10);
+    connect(ui->FilterSustainKnob, &QDial::valueChanged,
+        m_manager, &VoiceManager::setGlobalEnvelopeSustainAmplitude);
+
+    ui->FilterReleaseKnob->setValue(0);
+    ui->FilterReleaseKnob->setMaximum(2000);
+    ui->FilterReleaseKnob->setMinimum(0);
+    ui->FilterReleaseKnob->setSingleStep(10);
+    connect(ui->FilterReleaseKnob, &QDial::valueChanged,
+        m_manager, &VoiceManager::setGlobalEnvelopeReleaseTime);
 
     ui->CutOffKnob->setValue(1);
     ui->CutOffKnob->setMaximum(990);
@@ -158,8 +184,6 @@ MainWindow::MainWindow(QWidget *parent, AudioHal* hal, VoiceManager* pVoiceManag
 
     connect(ui->LpButton, &QAbstractButton::pressed,
             this, &MainWindow::setFilterLP);
-
-
 
     // get screen resolution and set window to maximum screen size
     QScreen *screen = QGuiApplication::primaryScreen();
@@ -290,20 +314,17 @@ void MainWindow::octaveDown()
 
 void MainWindow::setFilterBP()
 {
-    BandpassFilter filter;
-    m_manager->setFilter(std::make_shared<BandpassFilter>(filter));
+    m_manager->setFilter(FilterType::BANDPASS);
 }
 
 void MainWindow::setFilterHP()
 {
-    HighpassFilter filter;
-    m_manager->setFilter(std::make_shared<HighpassFilter>(filter));
+    m_manager->setFilter(FilterType::HIGHPASS);
 }
 
 void MainWindow::setFilterLP()
 {
-    LowpassFilter filter;
-    m_manager->setFilter(std::make_shared<LowpassFilter>(filter));
+    m_manager->setFilter(FilterType::LOWPASS);
 }
 
 double MainWindow::keyNumberToFrequency(unsigned keynumber)

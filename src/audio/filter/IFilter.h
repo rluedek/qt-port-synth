@@ -3,6 +3,7 @@
 
 class IFilter
 {
+
 public: 
     virtual void triggerOn() = 0;
     virtual void triggerOff() = 0;

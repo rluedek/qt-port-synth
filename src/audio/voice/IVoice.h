@@ -6,6 +6,8 @@
 #include "audio/filter/IFilter.h"
 
 #include "audio/modulation/ModulationValue.h"
+#include "audio/filter/FilterTypes.h"
+
 
 #include <memory>
 
@@ -34,9 +36,11 @@ public:
 
     virtual IEnvelope* getEnvelope() = 0;
     virtual void setEnvelope(IEnvelope* pEnvelope) = 0;
+
+    virtual std::shared_ptr<IEnvelope> getGlobalEnvelope() = 0;
     
     virtual std::shared_ptr<IFilter> getFilter() = 0;
-    virtual void setFilter(std::shared_ptr<IFilter> pFilter) = 0;
+    virtual void setFilter(FilterType type) = 0;
 
     virtual void setOscillationMix(float fMix) = 0;
 

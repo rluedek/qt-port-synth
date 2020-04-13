@@ -6,6 +6,7 @@
 
 #include "audio/oscillator/Lfo.h"
 #include "audio/IOscillatorFunction.h"
+#include "audio/filter/FilterTypes.h"
 
 class VoiceManager : public QObject
 {
@@ -32,8 +33,14 @@ public:
     void setEnvelopeDecayTime(int dDecayTime);
     void setEnvelopeSustainAmplitude(int dSustainAmplitude);
 
+    //Global envelope
+    void setGlobalEnvelopeAttackTime(int dAttackTime);
+    void setGlobalEnvelopeReleaseTime(int dReleaseTime);
+    void setGlobalEnvelopeDecayTime(int dDecayTime);
+    void setGlobalEnvelopeSustainAmplitude(int dSustainAmplitude);
+
     // Filter
-    void setFilter(std::shared_ptr<IFilter> pFilter);
+    void setFilter(FilterType type);
     void setCutOffFrequency(int frequency);
     void setResonance(int resonance);
 
@@ -49,7 +56,8 @@ private:
 
     IVoice* findFreeVoice();
 
-    std::shared_ptr<Lfo>    m_pLfo;
+    std::shared_ptr<Lfo>        m_pLfo;
+    std::shared_ptr<IEnvelope>  m_pEnvelope;
 
     void createVoices();
 };

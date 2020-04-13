@@ -1,8 +1,6 @@
 #ifndef IMODULATIOR_H
 #define IMODULATIOR_H
 
-#include <memory>
-
 namespace modulation
 {
     class IModulator
