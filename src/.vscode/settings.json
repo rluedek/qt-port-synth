@@ -4,5 +4,6 @@
         "random": "cpp",
         "optional": "cpp",
         "filtertypes": "cpp"
-    }
+    },
+    "cmake.configureOnOpen": false
 }

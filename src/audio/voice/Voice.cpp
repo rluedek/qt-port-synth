@@ -6,7 +6,7 @@
 
 #include <iostream>
 
-Voice::Voice(std::shared_ptr<IOscillatorFunction> pOscillator1
+Voice::Voice( std::shared_ptr<IOscillatorFunction> pOscillator1
             , std::shared_ptr<IOscillatorFunction> pOscillator2
             , IEnvelope* pEnvelope
             , std::shared_ptr<IFilter> pFilter
@@ -21,12 +21,12 @@ Voice::Voice(std::shared_ptr<IOscillatorFunction> pOscillator1
 , m_pOscillator2(pOscillator2)
 , m_bActive(false)
 {   
-    modulation::ModulationValue cutOff(0.01, 0.99);
+    modulation::ModulationValue cutOff(0.01, 0.99, 0.99);
     m_pFilterCutOff = std::make_shared<modulation::ModulationValue>(cutOff);
     m_pFilterCutOff->setModulator(pModulator);
     m_pFilterCutOff->setEnvelopeModulator(pGlobalEnvelope);
 
-    modulation::ModulationValue resonance(0.01, 0.99);
+    modulation::ModulationValue resonance(0.01, 0.99, 0.01);
     m_pFilterResonance = std::make_shared<modulation::ModulationValue>(resonance);
     m_pFilterResonance->setModulator(pModulator);
     m_pFilterResonance->setEnvelopeModulator(pGlobalEnvelope);
@@ -140,7 +140,6 @@ std::shared_ptr<IFilter> Voice::getFilter()
 
 void Voice::setFilter(FilterType type)
 {
-    
     switch (type)
     {
         case FilterType::LOWPASS:

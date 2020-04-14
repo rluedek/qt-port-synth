@@ -4,8 +4,9 @@
 
 namespace modulation
 {
-    ModulationValue::ModulationValue(float fMinValue, float fMaxValue)
-    : m_fValue(0.0)
+    ModulationValue::ModulationValue(float fMinValue, float fMaxValue, float fDefaultValue)
+    : m_bActivated(false)
+    , m_fValue(fDefaultValue)
     , m_fMinValue(fMinValue)
     , m_fMaxValue(fMaxValue)
     {
@@ -14,13 +15,18 @@ namespace modulation
 
     float ModulationValue::getModulatedValue(float fTime)
     {
-        float amplitude = 1;
-        if (m_pEnvelopeGenerator)
+        if(m_bActivated)
         {
-            amplitude = m_pEnvelopeGenerator->getAmplitude(fTime);
+            float amplitude = 1;
+            if (m_pEnvelopeGenerator)
+            {
+                amplitude = m_pEnvelopeGenerator->getAmplitude(fTime);
+            }
+
+            return fmax(fmin( amplitude * (m_fValue + m_pModulator->getModulationAmount()), m_fMaxValue), m_fMinValue);
         }
 
-        return fmax(fmin( amplitude * (m_fValue + m_pModulator->getModulationAmount()), m_fMaxValue), m_fMinValue);
+        return getValue();
     }
 
     float ModulationValue::getValue()

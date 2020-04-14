@@ -11,7 +11,7 @@ namespace modulation
     class ModulationValue
     {
     public:
-        ModulationValue(float fMinValue, float fMaxValue);
+        ModulationValue(float fMinValue, float fMaxValue, float fDefaultValue);
 
         float getModulatedValue(float fTime);
 
@@ -22,9 +22,10 @@ namespace modulation
         void setEnvelopeModulator(std::shared_ptr<IEnvelope> pEnvelopeModulator);
 
     private:
-        float m_fValue;
-        float m_fMinValue;
-        float m_fMaxValue;
+        bool    m_bActivated;
+        float   m_fValue;
+        float   m_fMinValue;
+        float   m_fMaxValue;
         
         std::shared_ptr<modulation::IModulator> m_pModulator;
         std::shared_ptr<IEnvelope> m_pEnvelopeGenerator;
