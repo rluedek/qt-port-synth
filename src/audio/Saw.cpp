@@ -14,7 +14,7 @@ Saw::Saw()
 
  }
 
-float Saw::calculate(float& fTime, float fFrequency)
+float Saw::calculate(float fTime, float fFrequency)
 {
     float x = fTime * fFrequency;
 

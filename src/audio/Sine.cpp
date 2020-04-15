@@ -2,6 +2,8 @@
 
 #include <cmath>
 
+#include <iostream>
+
 //ctor
 Sine::Sine()
 {
@@ -14,7 +16,7 @@ Sine::Sine()
 
  }
 
-float Sine::calculate(float& fTime, float fFrequency)
+float Sine::calculate(float fTime, float fFrequency)
 {
     return sin( 2. * M_PI * fFrequency * fTime);
 }

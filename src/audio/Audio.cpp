@@ -14,7 +14,7 @@ AudioHal::AudioHal()
 , left_phase(0)
 , right_phase(0)
 , m_Playing(false)
-, m_globalTime(0)
+, m_globalTime(0.0)
 {
 
 }
@@ -116,20 +116,20 @@ void AudioHal::stop(float frequency)
     }
 }
 
-int AudioHal::paUserCallback(    const void *inputBuffer, void *outputBuffer,
-                        unsigned long framesPerBuffer,
-                        const PaStreamCallbackTimeInfo* timeInfo,
-                        PaStreamCallbackFlags statusFlags)
+int AudioHal::paUserCallback(   const void *inputBuffer, void *outputBuffer,
+                                unsigned long framesPerBuffer,
+                                const PaStreamCallbackTimeInfo* timeInfo,
+                                PaStreamCallbackFlags statusFlags)
 {
     float *out = (float*)outputBuffer;
-    unsigned long i;
+    int j;
 
     (void) timeInfo; /* Prevent unused variable warnings. */
     (void) statusFlags;
     (void) inputBuffer;
-
+    
     //create signal
-    for( int j=0; j<TABLE_SIZE; j++ )
+    for( j=0; j<TABLE_SIZE; j++ )
     {
         float value = m_pVoiceManager->getSample(m_globalTime);
 
@@ -137,10 +137,6 @@ int AudioHal::paUserCallback(    const void *inputBuffer, void *outputBuffer,
         *out++ = m_fMasterVolume * value;  /* right */
 
         m_globalTime += TIME_STEP;
-        if (m_globalTime >= SAMPLE_RATE)
-        {    
-            m_globalTime = 0;
-        }
     }
 
     return paContinue;

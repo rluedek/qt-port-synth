@@ -15,7 +15,7 @@
 #include "audio/voice/Voice.h"
 #include "audio/voicemanager/VoiceManager.h"
 
-#define SAMPLE_RATE (44100)
+#define SAMPLE_RATE (44100.0)
 #define TABLE_SIZE (1024) 
 #define FRAMES_PER_BUFFER TABLE_SIZE
 #define TIME_STEP (1.0/SAMPLE_RATE)
@@ -63,7 +63,7 @@ private:
 
     float m_frequency;
     float m_fMasterVolume;
-    float m_globalTime;
+    double m_globalTime;
 
     VoiceManager* m_pVoiceManager;
 

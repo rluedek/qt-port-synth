@@ -12,7 +12,7 @@ Triangle::~Triangle()
 
 }
 
-float Triangle::calculate(float& fTime, float fFrequency)
+float Triangle::calculate(float fTime, float fFrequency)
 {
     return asin(sin(2.0 * M_PI * fFrequency * fTime)) * (2.0 / M_PI);
 }

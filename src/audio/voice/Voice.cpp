@@ -55,9 +55,9 @@ void Voice::noteOff(float fTime)
 
 float Voice::process(float fTime)
 {
-    float osc1 = (float)m_pOscillator1->calculate(m_fFrequency, fTime);
-    float osc2 = (float)m_pOscillator2->calculate(m_fFrequency, fTime);
-    float amp = (float)m_pEnvelope->getAmplitude(fTime);
+    float osc1 = m_pOscillator1->calculate(m_fFrequency, fTime);
+    float osc2 = m_pOscillator2->calculate(m_fFrequency, fTime);
+    float amp = m_pEnvelope->getAmplitude(fTime);
     
     m_pFilter->setCutoffFrequency(m_pFilterCutOff->getModulatedValue(fTime));
     m_pFilter->setResonance(m_pFilterResonance->getModulatedValue(fTime));
