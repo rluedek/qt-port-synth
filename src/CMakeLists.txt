@@ -25,6 +25,8 @@ find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
 #LINK_DIRECTORIES(/usr/lib/x86_64-linux-gnu/)
 
+add_subdirectory("third_party/portaudio")
+
 add_executable(qt-port-synth
   main.cpp
   mainwindow.cpp
@@ -47,4 +49,4 @@ add_executable(qt-port-synth
   audio/modulation/ModulationValue.cpp
 )
 
-target_link_libraries(qt-port-synth PRIVATE Qt5::Widgets portaudio)
+target_link_libraries(qt-port-synth PRIVATE Qt5::Widgets "libportaudio.so")
