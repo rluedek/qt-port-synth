@@ -9,21 +9,12 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
 set(CMAKE_CXX_STANDARD 11)
-#set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-# QtCreator supports the following variables for Android, which are identical to qmake Android variables.
-# Check http://doc.qt.io/qt-5/deployment-android.html for more information.
-# They need to be set before the find_package(Qt5 ...) call.
-
-# this would be needed if qt would be on another place, but then portaudio wouldn't be found
-#set (CMAKE_PREFIX_PATH "/home/rluedek/Qt5.7.0/5.7/") 
-
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
-#LINK_DIRECTORIES(/usr/lib/x86_64-linux-gnu/)
 
 add_subdirectory("third_party/portaudio")
 
