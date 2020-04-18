@@ -4,4 +4,3 @@ src/CMakeCache.txt
 src/Makefile
 src/CMakeFiles/*
 src/*_autogen/*
-src/third_party/portaudio/*
