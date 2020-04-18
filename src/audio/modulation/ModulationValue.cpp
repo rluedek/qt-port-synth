@@ -5,10 +5,8 @@
 namespace modulation
 {
     ModulationValue::ModulationValue(float fMinValue, float fMaxValue, float fDefaultValue)
-    : m_bActivated(false)
-    , m_fValue(fDefaultValue)
-    , m_fMinValue(fMinValue)
-    , m_fMaxValue(fMaxValue)
+    : Param(fMinValue, fMaxValue, fDefaultValue)
+    , m_bActivated(false)
     {
 
     }
@@ -27,16 +25,6 @@ namespace modulation
         }
 
         return getValue();
-    }
-
-    float ModulationValue::getValue()
-    {
-        return m_fValue;
-    }
-
-    void ModulationValue::setValue(float fValue)
-    {
-        m_fValue = fValue;
     }
 
     void ModulationValue::setModulator(std::shared_ptr<IModulator> pModulator)

@@ -50,6 +50,7 @@ private:
     std::shared_ptr<modulation::ModulationValue> m_pFilterCutOff;
     std::shared_ptr<modulation::ModulationValue> m_pFilterResonance;
 
+
 /******************************************************************************
     Setters and Getters
 ******************************************************************************/

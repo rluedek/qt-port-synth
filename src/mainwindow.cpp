@@ -112,8 +112,6 @@ MainWindow::MainWindow(QWidget *parent, AudioHal* hal, VoiceManager* pVoiceManag
     ui->VolumeGainKnob->setMaximum(1000);
     ui->VolumeGainKnob->setMinimum(0);
     ui->VolumeGainKnob->setSingleStep(1);
-
-
     connect(ui->VolumeGainKnob, &QDial::valueChanged,
         m_hal, &AudioHal::setVolume);
 
