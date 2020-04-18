@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(qtsynth LANGUAGES CXX)
+project(yuna-synth LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -18,7 +18,7 @@ find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
 add_subdirectory("third_party/portaudio")
 
-add_executable(qt-port-synth
+add_executable(yuna-synth
   main.cpp
   mainwindow.cpp
   mainwindow.h
