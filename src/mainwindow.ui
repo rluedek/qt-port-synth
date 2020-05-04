@@ -434,7 +434,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>Yuna Synth</string>
+   <string>Qt-Port Synth</string>
   </property>
   <property name="toolButtonStyle">
    <enum>Qt::ToolButtonIconOnly</enum>
@@ -1221,7 +1221,7 @@
        </font>
       </property>
       <property name="text">
-       <string>yuna synth</string>
+       <string>Qt-Port synth</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignHCenter|Qt::AlignTop</set>
