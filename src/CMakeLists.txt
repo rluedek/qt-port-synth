@@ -41,4 +41,4 @@ add_executable(yuna-synth
   audio/modulation/ModulationValue.cpp
 )
 
-target_link_libraries(yuna-synth PRIVATE Qt5::Widgets "libportaudio.so")
+target_link_libraries(yuna-synth PRIVATE Qt5::Widgets portaudio)
