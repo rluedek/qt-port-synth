@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(yuna-synth LANGUAGES CXX)
+project(yuna-synth)
+
+add_subdirectory("third_party/portaudio")
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -15,8 +17,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
-
-add_subdirectory("third_party/portaudio")
 
 add_executable(yuna-synth
   main.cpp
@@ -41,4 +41,4 @@ add_executable(yuna-synth
   audio/modulation/ModulationValue.cpp
 )
 
-target_link_libraries(yuna-synth PRIVATE Qt5::Widgets portaudio)
+target_link_libraries(yuna-synth PRIVATE Qt5::Widgets portaudio_static)
