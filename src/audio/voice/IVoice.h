@@ -34,10 +34,9 @@ public:
     virtual std::shared_ptr<IOscillatorFunction> getOscillator2() = 0;
     virtual void setOscillator2(std::shared_ptr<IOscillatorFunction> func) = 0;
 
-    virtual IEnvelope* getEnvelope() = 0;
-    virtual void setEnvelope(IEnvelope* pEnvelope) = 0;
+    virtual std::shared_ptr<IEnvelope> getAmpEnvelope() = 0;
 
-    virtual std::shared_ptr<IEnvelope> getGlobalEnvelope() = 0;
+    virtual std::shared_ptr<IEnvelope> getFilterEnvelope() = 0;
     
     virtual std::shared_ptr<IFilter> getFilter() = 0;
     virtual void setFilter(FilterType type) = 0;

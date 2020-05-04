@@ -113,7 +113,7 @@ MainWindow::MainWindow(QWidget *parent, AudioHal* hal, VoiceManager* pVoiceManag
     ui->VolumeGainKnob->setMinimum(0);
     ui->VolumeGainKnob->setSingleStep(1);
     connect(ui->VolumeGainKnob, &QDial::valueChanged,
-        m_hal, &AudioHal::setVolume);
+        m_manager, &VoiceManager::setGain);
 
 
     connect(ui->RadioButton_Osc1_Sinus, &QRadioButton::clicked,

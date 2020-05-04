@@ -1,4 +1,5 @@
 #include "Param.h"
+#include "qdebug.h"
 
 Param::Param(float fMinValue, float fMaxValue, float fDefaultValue)
 : m_fMaxValue(fMaxValue)
@@ -15,7 +16,11 @@ float Param::getValue()
 
 void Param::setValue(float fValue)
 {
-    m_fValue = fValue;
+    if (fValue <= m_fMaxValue && fValue >= m_fMinValue)
+    {
+        qDebug() << "Setting value to " << fValue;
+        m_fValue = fValue;
+    }
 }
 
 void Param::setMinValue(float fMinValue)

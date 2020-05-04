@@ -9,10 +9,7 @@
 
 #include "IOscillatorFunction.h"
 #include "portaudio.h"
-#include "audio/envelope/Envelope.h"
-#include "audio/filter/LowpassFilter.h"
 
-#include "audio/voice/Voice.h"
 #include "audio/voicemanager/VoiceManager.h"
 
 #define SAMPLE_RATE (44100.0)
@@ -62,7 +59,6 @@ private:
     static int m_sDefaultDeviceNumber;
 
     float m_frequency;
-    float m_fMasterVolume;
     double m_globalTime;
 
     VoiceManager* m_pVoiceManager;

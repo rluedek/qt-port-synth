@@ -9,7 +9,6 @@ int AudioHal::m_sDefaultDeviceNumber = -1;
 //ctor
 AudioHal::AudioHal()
 : m_frequency(0.0)
-, m_fMasterVolume(0.0)
 , stream(0)
 , left_phase(0)
 , right_phase(0)
@@ -133,8 +132,8 @@ int AudioHal::paUserCallback(   const void *inputBuffer, void *outputBuffer,
     {
         float value = m_pVoiceManager->getSample(m_globalTime);
 
-        *out++ = m_fMasterVolume * value;  /* left */
-        *out++ = m_fMasterVolume * value;  /* right */
+        *out++ = value;  /* left */
+        *out++ = value;  /* right */
 
         m_globalTime += TIME_STEP;
     }
@@ -154,9 +153,4 @@ float AudioHal::getGlobalTime()
 void AudioHal::setVoiceManager(VoiceManager* pVoicemanager)
 {
     m_pVoiceManager = pVoicemanager;
-}
-
-void AudioHal::setVolume(int volume)
-{
-    m_fMasterVolume = volume / 100.0;
 }

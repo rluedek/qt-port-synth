@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "IModulator.h"
+#include "audio/oscillator/ILfo.h"
 #include "audio/envelope/IEnvelope.h"
 #include "audio/voicemanager/Param.h"
 
@@ -16,13 +16,13 @@ namespace modulation
 
         float getModulatedValue(float fTime);
 
-        void setModulator(std::shared_ptr<IModulator> pModulator);
+        void setLfo(std::shared_ptr<ILfo> pModulator);
         void setEnvelopeModulator(std::shared_ptr<IEnvelope> pEnvelopeModulator);
 
     private:
         bool    m_bActivated;
         
-        std::shared_ptr<modulation::IModulator> m_pModulator;
+        std::shared_ptr<ILfo> m_pLfo;
         std::shared_ptr<IEnvelope> m_pEnvelopeGenerator;
     };
 }

@@ -21,15 +21,15 @@ namespace modulation
                 amplitude = m_pEnvelopeGenerator->getAmplitude(fTime);
             }
 
-            return fmax(fmin( amplitude * (m_fValue + m_pModulator->getModulationAmount()), m_fMaxValue), m_fMinValue);
+            return fmax(fmin( amplitude * (m_fValue + m_pLfo->getModulationAmount()), m_fMaxValue), m_fMinValue);
         }
 
         return getValue();
     }
 
-    void ModulationValue::setModulator(std::shared_ptr<IModulator> pModulator)
+    void ModulationValue::setLfo(std::shared_ptr<ILfo> pModulator)
     {
-        m_pModulator = pModulator;
+        m_pLfo = pModulator;
     }
 
     void ModulationValue::setEnvelopeModulator(std::shared_ptr<IEnvelope> pEnvelopeModulator)

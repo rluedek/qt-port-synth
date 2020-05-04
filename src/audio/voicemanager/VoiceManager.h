@@ -22,6 +22,9 @@ public:
 
     float getSample(float fTime);
 
+    //Gain
+    void setGain(float gain);
+
     //Oscillators
     void setOscillator1(std::shared_ptr<IOscillatorFunction> func);
     void setOscillator2(std::shared_ptr<IOscillatorFunction> func);
@@ -57,9 +60,24 @@ private:
     IVoice* findFreeVoice();
 
     std::shared_ptr<Lfo>        m_pLfo;
-    std::shared_ptr<IEnvelope>  m_pEnvelope;
 
-    void createVoices();
+/******************************************************************************
+Parameters
+******************************************************************************/
+    std::shared_ptr<Param> m_pGain;
+    std::shared_ptr<Param> m_pOscillatorMix;
+    std::shared_ptr<Param> m_pEnvelopeAttackTime;
+    std::shared_ptr<Param> m_pEnvelopeReleaseTime;
+    std::shared_ptr<Param> m_pEnvelopeDecayTime;
+    std::shared_ptr<Param> m_pEnvelopeSustainAmplitude;
+    std::shared_ptr<Param> m_pFilterEnvelopeAttackTime;
+    std::shared_ptr<Param> m_pFilterEnvelopeReleaseTime;
+    std::shared_ptr<Param> m_pFilterEnvelopeDecayTime;
+    std::shared_ptr<Param> m_pFilterEnvelopeSustainAmplitude;
+    std::shared_ptr<Param> m_pLfoFrequency;
+    std::shared_ptr<Param> m_pLfoAmount;
+
+    void createVoices();    
 };
 
 #endif

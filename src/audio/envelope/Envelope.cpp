@@ -1,12 +1,15 @@
 #include "Envelope.h"
 
-Envelope::Envelope()
-: m_fAttackTime(0.1)
-, m_fDecayTime(0.01)
-, m_fReleaseTime(2.0)
+Envelope::Envelope( std::shared_ptr<Param> pAttackTime
+    	, std::shared_ptr<Param> pDecayTime
+    	, std::shared_ptr<Param> pReleaseTime
+    	, std::shared_ptr<Param> pSustainAmplitude)
+: m_pAttackTime(pAttackTime)
+, m_pDecayTime(pDecayTime)
+, m_pReleaseTime(pReleaseTime)
+, m_pSustainAmplitude(pSustainAmplitude)
 , m_fCurrentAmplitude(0.0)
 , m_fActualSustainAmplitude(0.0)
-, m_fSustainAmplitude(0.8)
 , m_fStartAmplitude(1.0)
 , m_bNoteOn(false)
 , m_fTriggerOffTime(0.0)
@@ -41,22 +44,22 @@ float Envelope::getAmplitude(float fTime)
 	{
 		fLifeTime = fTime - m_fTriggerOnTime;
 
-		if (fLifeTime <= m_fAttackTime)
+		if (fLifeTime <= m_pAttackTime->getValue())
 		{
 			// In attack Phase - approach max amplitude
-			fAmplitude = (fLifeTime / m_fAttackTime) * m_fStartAmplitude;
+			fAmplitude = (fLifeTime / m_pAttackTime->getValue()) * m_fStartAmplitude;
 		}
 
-		else if (fLifeTime > m_fAttackTime && fLifeTime <= (m_fAttackTime + m_fDecayTime))
+		else if (fLifeTime > m_pAttackTime->getValue() && fLifeTime <= (m_pAttackTime->getValue() + m_pDecayTime->getValue()))
 		{
 			// In decay phase - reduce to sustained amplitude
-			fAmplitude = ((fLifeTime - m_fAttackTime) / m_fDecayTime) * (m_fSustainAmplitude - m_fStartAmplitude) + m_fStartAmplitude;
+			fAmplitude = ((fLifeTime - m_pAttackTime->getValue()) / m_pDecayTime->getValue()) * (m_pSustainAmplitude->getValue() - m_fStartAmplitude) + m_fStartAmplitude;
 		}
 
-		else if (fLifeTime > (m_fAttackTime + m_fDecayTime))
+		else if (fLifeTime > (m_pAttackTime->getValue() + m_pDecayTime->getValue()))
 		{
 			// In sustain phase - dont change until note released
-			fAmplitude = m_fSustainAmplitude;
+			fAmplitude = m_pSustainAmplitude->getValue();
 		}
 		m_fActualSustainAmplitude = fAmplitude;
 	}
@@ -65,7 +68,7 @@ float Envelope::getAmplitude(float fTime)
 		fLifeTime = fTime - m_fTriggerOffTime;
 
 		// Note has been released, so in release phase
-		fAmplitude = ((fLifeTime) / m_fReleaseTime) * (0.0 - m_fActualSustainAmplitude) + m_fActualSustainAmplitude;
+		fAmplitude = ((fLifeTime) / m_pReleaseTime->getValue()) * (0.0 - m_fActualSustainAmplitude) + m_fActualSustainAmplitude;
 	}
 
 	// Amplitude should not be negative
@@ -88,47 +91,6 @@ void Envelope::reset()
 	m_fCurrentAmplitude = 0.0;
 	m_fTriggerOffTime = 0.0;
 	m_fTriggerOnTime = 0.0;
-}
-
-bool Envelope::setAttackTime(float fAttackTime)
-{
-	if (fAttackTime <= 0.0)
-	{
-		fAttackTime = 0.01;
-	}
-
-	m_fAttackTime = fAttackTime;
-	return true;
-}
-
-float Envelope::getAttackTime()
-{
-	return m_fAttackTime;
-}
-
-
-bool Envelope::setDecayTime(float fDecayTime)
-{
-	m_fDecayTime = fDecayTime;
-	return true;
-}
-
-bool Envelope::setReleaseTime(float fReleaseTime)
-{
-
-	m_fReleaseTime = fReleaseTime;
-	return true;
-}
-
-float Envelope::getReleaseTime()
-{
-	return m_fReleaseTime;
-}
-
-bool Envelope::setSustainAmplitude(float fSustainAmplitude)
-{
-	m_fSustainAmplitude = fSustainAmplitude;
-	return true;
 }
 
 bool Envelope::isNoteOff()

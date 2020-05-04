@@ -1,15 +1,21 @@
 #ifndef ENVELOPE_H
 #define ENVELOPE_H
 
+#include <memory>
+
 #include "audio/envelope/IEnvelope.h"
-#include "audio/modulation/IModulator.h"
+#include "audio/voicemanager/Param.h"
 
 class Envelope : public IEnvelope
 {
 public:
 
     //ctor
-    Envelope();
+    Envelope( std::shared_ptr<Param> pAttackTime
+            , std::shared_ptr<Param> pDecayTime
+            , std::shared_ptr<Param> pReleaseTime
+            , std::shared_ptr<Param> pSustainAmplitude);
+
     //dtor
     virtual ~Envelope();
 
@@ -18,26 +24,16 @@ public:
     float getAmplitude(float fTime) override;
     float getCurrentAmplitude() override;
     void reset() override;
-
-    bool setAttackTime(float fAttackTime) override;
-    float getAttackTime() override;
-
-    bool setDecayTime(float fDecayTime) override;
-
-    bool setReleaseTime(float fReleaseTime) override;
-    float getReleaseTime() override;
-
-    bool setSustainAmplitude(float fSustainAmplitude) override;
-
     bool isNoteOff() override;
 
 
 private:
-    float m_fAttackTime;
-    float m_fDecayTime;
-    float m_fReleaseTime;
+    std::shared_ptr<Param> m_pAttackTime;
+    std::shared_ptr<Param> m_pDecayTime;
+    std::shared_ptr<Param> m_pReleaseTime;
+    std::shared_ptr<Param> m_pSustainAmplitude;
+    
     float m_fActualSustainAmplitude;
-    float m_fSustainAmplitude;
     float m_fStartAmplitude;
     float m_fTimeNoteOn;
     float m_fTimeNoteOff;

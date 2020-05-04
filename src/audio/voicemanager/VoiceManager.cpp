@@ -1,23 +1,32 @@
-#include "audio/voicemanager/VoiceManager.h"
-
 #include <iostream>
 #include <memory>
 
+#include "audio/voicemanager/VoiceManager.h"
 #include "audio/envelope/Envelope.h"
 #include "audio/filter/LowpassFilter.h"
 #include "audio/voice/Voice.h"
 
-
 VoiceManager::VoiceManager()
 {
-    //create the global Lfo
-    Lfo lfo;
-    std::shared_ptr<IOscillatorFunction> lfoOsc = std::make_shared<Sine>();
-    lfo.setOscillator(lfoOsc);
-    m_pLfo = std::make_shared<Lfo>(lfo);
+    m_pGain = std::make_shared<Param>(0.0,1.0, 0.2);
 
-    Envelope envelope;
-    m_pEnvelope = std::make_shared<Envelope>(envelope);
+    m_pOscillatorMix = std::make_shared<Param>(0.0,1.0, 0.5);
+
+    m_pEnvelopeAttackTime = std::make_shared<Param>(0.01, 0.99, 0.5);
+    m_pEnvelopeReleaseTime = std::make_shared<Param>(0.01, 2.00, 0.5);
+    m_pEnvelopeDecayTime = std::make_shared<Param>(0.01, 0.99, 0.5);
+    m_pEnvelopeSustainAmplitude = std::make_shared<Param>(0.0,1.0,1.0);
+    
+    m_pFilterEnvelopeAttackTime = std::make_shared<Param>(0.01, 0.99, 0.5);
+    m_pFilterEnvelopeReleaseTime = std::make_shared<Param>(0.01, 2.00, 0.5);
+    m_pFilterEnvelopeDecayTime = std::make_shared<Param>(0.01, 0.99, 0.5);
+    m_pFilterEnvelopeSustainAmplitude = std::make_shared<Param>(0.0,1.0,1.0);
+
+    m_pLfoFrequency = std::make_shared<Param>(0.0, 20.0, 0.0);
+    m_pLfoAmount = std::make_shared<Param>(0.0, 1.0, 0.0);
+
+    m_pLfo = std::make_shared<Lfo>(m_pLfoFrequency, m_pLfoAmount);
+    m_pLfo->setOscillator(std::make_shared<Sine>());
 
     createVoices();
 }
@@ -41,8 +50,7 @@ IVoice* VoiceManager::findFreeVoice()
 void VoiceManager::noteOn(float fFrequency, float fTime)
 {
     IVoice* pVoice = findFreeVoice();
-    m_pEnvelope->noteOn(fTime);
-
+    
     if (pVoice)
     {   
         pVoice->reset();
@@ -53,7 +61,7 @@ void VoiceManager::noteOn(float fFrequency, float fTime)
 void VoiceManager::noteOff(float fFrequency, float fTime)
 {
     IVoice* pVoice = nullptr;
-    m_pEnvelope->noteOff(fTime);
+    
     for (int i = 0; i < NumberOfVoices; i++)
     {
         pVoice = voices[i];
@@ -62,6 +70,11 @@ void VoiceManager::noteOff(float fFrequency, float fTime)
             pVoice->noteOff(fTime);
         }
     }
+}
+
+void VoiceManager::setGain(float gain)
+{
+    m_pGain->setValue(gain);
 }
 
 float VoiceManager::getSample(float fTime)
@@ -78,21 +91,28 @@ float VoiceManager::getSample(float fTime)
         }
     }
 
-    return value;
+    return value * m_pGain->getValue();
 }
 
 void VoiceManager::createVoices()
 {
     for (int i = 0; i < NumberOfVoices; i++)
     {
-        IEnvelope* env = new Envelope(); // created forever
-
-        std::shared_ptr<IEnvelope> globalEnvelope = std::make_shared<Envelope>();
         std::shared_ptr<IOscillatorFunction> osc1 = std::make_shared<Sine>();
         std::shared_ptr<IOscillatorFunction> osc2 = std::make_shared<Square>();
         std::shared_ptr<IFilter> filter = std::make_shared<LowpassFilter>();
 
-        IVoice* voice = new Voice(osc1, osc2, env, filter, m_pLfo, globalEnvelope);
+        std::shared_ptr<IEnvelope> pAmpEnvelope = std::make_shared<Envelope>(m_pEnvelopeAttackTime
+                                                                    , m_pEnvelopeDecayTime
+                                                                    , m_pEnvelopeReleaseTime
+                                                                    , m_pEnvelopeSustainAmplitude);
+        
+        std::shared_ptr<IEnvelope> pFilterEnvelope = std::make_shared<Envelope>(m_pFilterEnvelopeAttackTime
+                                                                    , m_pFilterEnvelopeDecayTime
+                                                                    , m_pFilterEnvelopeReleaseTime
+                                                                    , m_pFilterEnvelopeSustainAmplitude);
+
+        IVoice* voice = new Voice(osc1, osc2, filter, m_pLfo, pFilterEnvelope, pAmpEnvelope);
 
         voices[i] = voice;
     }
@@ -126,54 +146,22 @@ void VoiceManager::setOscillator2(std::shared_ptr<IOscillatorFunction> func)
 
 void VoiceManager::setEnvelopeAttackTime(int dAttackTime)
 {
-    for (int i = 0; i < NumberOfVoices; i++)
-    {
-        IVoice* pVoice = voices[i];
-        
-        if(pVoice)
-        {
-            pVoice->getEnvelope()->setAttackTime(dAttackTime / 1000.0);
-        }
-    }
+    m_pEnvelopeAttackTime->setValue(dAttackTime / 1000.0);
 }
 
 void VoiceManager::setEnvelopeReleaseTime(int dReleaseTime)
 {
-    for (int i = 0; i < NumberOfVoices; i++)
-    {
-        IVoice* pVoice = voices[i];
-        
-        if(pVoice)
-        {
-            pVoice->getEnvelope()->setReleaseTime(dReleaseTime / 1000.0);
-        }
-    }
+    m_pEnvelopeReleaseTime->setValue(dReleaseTime / 1000.0);
 }
 
 void VoiceManager::setEnvelopeDecayTime(int dDecayTime)
 {
-    for (int i = 0; i < NumberOfVoices; i++)
-    {
-        IVoice* pVoice = voices[i];
-        
-        if(pVoice)
-        {
-            pVoice->getEnvelope()->setDecayTime(dDecayTime / 1000.0);
-        }
-    }
+    m_pEnvelopeDecayTime->setValue(dDecayTime / 1000.0);
 }
 
 void VoiceManager::setEnvelopeSustainAmplitude(int dSustainAmplitude)
 {
-    for (int i = 0; i < NumberOfVoices; i++)
-    {
-        IVoice* pVoice = voices[i];
-        
-        if(pVoice)
-        {
-            pVoice->getEnvelope()->setSustainAmplitude(dSustainAmplitude / 1000.0);
-        }
-    }
+    m_pEnvelopeSustainAmplitude->setValue(dSustainAmplitude / 1000.0);
 }
 
 void VoiceManager::setFilter(FilterType type)
@@ -236,12 +224,12 @@ void VoiceManager::setLfo(std::shared_ptr<Lfo> pLfo)
 
 void VoiceManager::setLfoFrequency(int frequency)
 {
-    m_pLfo->setFrequency(frequency / 1000.0);
+    m_pLfoFrequency->setValue(frequency / 1000.0);
 }
 
 void VoiceManager::setLfoAmount(int amount)
 {
-    m_pLfo->setAmount(amount / 1000.0);
+    m_pLfoAmount->setValue(amount / 1000.0);
 }
 
 void VoiceManager::setLfoOscillator(std::shared_ptr<IOscillatorFunction> func)
@@ -249,55 +237,22 @@ void VoiceManager::setLfoOscillator(std::shared_ptr<IOscillatorFunction> func)
     m_pLfo->setOscillator(func);
 }
 
-// GLOBAL ENVELOPE
 void VoiceManager::setGlobalEnvelopeAttackTime(int dAttackTime)
 {
-    for (int i = 0; i < NumberOfVoices; i++)
-    {
-        IVoice* pVoice = voices[i];
-        
-        if(pVoice)
-        {
-            pVoice->getGlobalEnvelope()->setAttackTime(dAttackTime / 1000.0);
-        }
-    }
+    m_pFilterEnvelopeAttackTime->setValue(dAttackTime / 1000.0);
 }
 
 void VoiceManager::setGlobalEnvelopeReleaseTime(int dReleaseTime)
 {
-    for (int i = 0; i < NumberOfVoices; i++)
-    {
-        IVoice* pVoice = voices[i];
-        
-        if(pVoice)
-        {
-            pVoice->getGlobalEnvelope()->setReleaseTime(dReleaseTime / 1000.0);
-        }
-    }
+    m_pFilterEnvelopeReleaseTime->setValue(dReleaseTime / 1000.0);
 }
 
 void VoiceManager::setGlobalEnvelopeDecayTime(int dDecayTime)
 {
-    for (int i = 0; i < NumberOfVoices; i++)
-    {
-        IVoice* pVoice = voices[i];
-        
-        if(pVoice)
-        {
-            pVoice->getGlobalEnvelope()->setDecayTime(dDecayTime / 1000.0);
-        }
-    }
+    m_pFilterEnvelopeDecayTime->setValue(dDecayTime / 1000.0);
 }
 
 void VoiceManager::setGlobalEnvelopeSustainAmplitude(int dSustainAmplitude)
 {
-    for (int i = 0; i < NumberOfVoices; i++)
-    {
-        IVoice* pVoice = voices[i];
-        
-        if(pVoice)
-        {
-            pVoice->getGlobalEnvelope()->setSustainAmplitude(dSustainAmplitude / 1000.0);
-        }
-    }
+    m_pFilterEnvelopeSustainAmplitude->setValue(dSustainAmplitude / 1000.0);
 }
