@@ -14,7 +14,7 @@ namespace modulation
 {
     ModulationValue::ModulationValue(float fMinValue, float fMaxValue, float fDefaultValue)
     : Param(fMinValue, fMaxValue, fDefaultValue)
-    , m_bActivated(false)
+    , m_bActivated(true)
     {
 
     }
