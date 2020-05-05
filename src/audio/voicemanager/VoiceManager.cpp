@@ -80,9 +80,9 @@ void VoiceManager::noteOff(float fFrequency, float fTime)
     }
 }
 
-void VoiceManager::setGain(float gain)
+void VoiceManager::setGain(int gain)
 {
-    m_pGain->setValue(gain);
+    m_pGain->setValue(gain / 1000.0);
 }
 
 float VoiceManager::getSample(float fTime)

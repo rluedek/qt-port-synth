@@ -31,7 +31,7 @@ public:
     float getSample(float fTime);
 
     //Gain
-    void setGain(float gain);
+    void setGain(int gain);
 
     //Oscillators
     void setOscillator1(std::shared_ptr<IOscillatorFunction> func);

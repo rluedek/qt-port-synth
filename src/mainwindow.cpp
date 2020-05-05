@@ -12,6 +12,8 @@
 #include <QScreen>
 
 #include "audio/filter/FilterTypes.h"
+#include "audio/DefaultParameters.h"
+
 
 #include "ui_mainwindow.h"
 #include "qdebug.h"
@@ -25,101 +27,102 @@ MainWindow::MainWindow(QWidget *parent, AudioHal* hal, VoiceManager* pVoiceManag
 {
     ui->setupUi(this);
 
-    ui->VolumeAttackKnob->setValue(0);
-    ui->VolumeAttackKnob->setMaximum(990);
-    ui->VolumeAttackKnob->setMinimum(1);
-    ui->VolumeAttackKnob->setSingleStep(10);
+    ui->VolumeAttackKnob->setValue(ENV_ATTACK_TIME_DEFAULT);
+    ui->VolumeAttackKnob->setMaximum(ENV_ATTACK_TIME_MAX);
+    ui->VolumeAttackKnob->setMinimum(ENV_ATTACK_TIME_MIN);
+    ui->VolumeAttackKnob->setSingleStep(KNOB_STEP);
     connect(ui->VolumeAttackKnob, &QDial::valueChanged,
         m_manager, &VoiceManager::setEnvelopeAttackTime);
 
-    ui->VolumeDecayKnob->setValue(0);
-    ui->VolumeDecayKnob->setMaximum(990);
-    ui->VolumeDecayKnob->setMinimum(1);
-    ui->VolumeDecayKnob->setSingleStep(10);
+    ui->VolumeDecayKnob->setValue(ENV_DECAY_TIME_DEFAULT);
+    ui->VolumeDecayKnob->setMaximum(ENV_DECAY_TIME_MAX);
+    ui->VolumeDecayKnob->setMinimum(ENV_DECAY_TIME_MIN);
+    ui->VolumeDecayKnob->setSingleStep(KNOB_STEP);
     connect(ui->VolumeDecayKnob, &QDial::valueChanged,
         m_manager, &VoiceManager::setEnvelopeDecayTime);
 
-    ui->VolumeSustsainKnob->setValue(0);
-    ui->VolumeSustsainKnob->setMaximum(990);
-    ui->VolumeSustsainKnob->setMinimum(1);
-    ui->VolumeSustsainKnob->setSingleStep(10);
+    
+    ui->VolumeSustsainKnob->setMaximum(ENV_SUSTAIN_AMPL_MAX);
+    ui->VolumeSustsainKnob->setMinimum(ENV_SUSTAIN_AMPL_MIN);
+    ui->VolumeSustsainKnob->setSingleStep(KNOB_STEP);
+    ui->VolumeSustsainKnob->setValue(ENV_SUSTAIN_AMPL_DEFAULT);
     connect(ui->VolumeSustsainKnob, &QDial::valueChanged,
         m_manager, &VoiceManager::setEnvelopeSustainAmplitude);
 
-    ui->VolumeReleaseKnob->setValue(0);
-    ui->VolumeReleaseKnob->setMaximum(2000);
-    ui->VolumeReleaseKnob->setMinimum(0);
-    ui->VolumeReleaseKnob->setSingleStep(10);
+    ui->VolumeReleaseKnob->setMaximum(ENV_RELEASE_TIME_MAX);
+    ui->VolumeReleaseKnob->setMinimum(ENV_RELEASE_TIME_MIN);
+    ui->VolumeReleaseKnob->setSingleStep(KNOB_STEP);
+    ui->VolumeReleaseKnob->setValue(ENV_RELEASE_TIME_DEFAULT);
     connect(ui->VolumeReleaseKnob, &QDial::valueChanged,
         m_manager, &VoiceManager::setEnvelopeReleaseTime);
 
-    ui->FilterEnvelopeAttackKnob->setValue(0);
-    ui->FilterEnvelopeAttackKnob->setMaximum(990);
-    ui->FilterEnvelopeAttackKnob->setMinimum(1);
-    ui->FilterEnvelopeAttackKnob->setSingleStep(10);
+    ui->FilterEnvelopeAttackKnob->setMaximum(FILTER_ENV_ATTACK_TIME_MAX);
+    ui->FilterEnvelopeAttackKnob->setMinimum(FILTER_ENV_ATTACK_TIME_MIN);
+    ui->FilterEnvelopeAttackKnob->setSingleStep(KNOB_STEP);
+    ui->FilterEnvelopeAttackKnob->setValue(FILTER_ENV_ATTACK_TIME_DEFAULT);
     connect(ui->FilterEnvelopeAttackKnob, &QDial::valueChanged,
         m_manager, &VoiceManager::setGlobalEnvelopeAttackTime);
 
-    ui->FilterDecayKnob->setValue(0);
-    ui->FilterDecayKnob->setMaximum(990);
-    ui->FilterDecayKnob->setMinimum(1);
-    ui->FilterDecayKnob->setSingleStep(10);
+    ui->FilterDecayKnob->setMaximum(FILTER_ENV_DECAY_TIME_MAX);
+    ui->FilterDecayKnob->setMinimum(FILTER_ENV_DECAY_TIME_MIN);
+    ui->FilterDecayKnob->setSingleStep(KNOB_STEP);
+    ui->FilterDecayKnob->setValue(FILTER_ENV_DECAY_TIME_DEFAULT);
     connect(ui->FilterDecayKnob, &QDial::valueChanged,
         m_manager, &VoiceManager::setGlobalEnvelopeDecayTime);
 
-    ui->FilterSustainKnob->setValue(0);
-    ui->FilterSustainKnob->setMaximum(990);
-    ui->FilterSustainKnob->setMinimum(1);
-    ui->FilterSustainKnob->setSingleStep(10);
+    ui->FilterSustainKnob->setMaximum(FILTER_ENV_SUSTAIN_AMPL_MAX);
+    ui->FilterSustainKnob->setMinimum(FILTER_ENV_SUSTAIN_AMPL_MIN);
+    ui->FilterSustainKnob->setSingleStep(KNOB_STEP);
+    ui->FilterSustainKnob->setValue(FILTER_ENV_SUSTAIN_AMPL_DEFAULT);
     connect(ui->FilterSustainKnob, &QDial::valueChanged,
         m_manager, &VoiceManager::setGlobalEnvelopeSustainAmplitude);
 
-    ui->FilterReleaseKnob->setValue(0);
-    ui->FilterReleaseKnob->setMaximum(2000);
-    ui->FilterReleaseKnob->setMinimum(0);
-    ui->FilterReleaseKnob->setSingleStep(10);
+    ui->FilterReleaseKnob->setMaximum(FILTER_ENV_RELEASE_TIME_MAX);
+    ui->FilterReleaseKnob->setMinimum(FILTER_ENV_RELEASE_TIME_MIN);
+    ui->FilterReleaseKnob->setSingleStep(KNOB_STEP);
+    ui->FilterReleaseKnob->setValue(FILTER_ENV_RELEASE_TIME_DEFAULT);
     connect(ui->FilterReleaseKnob, &QDial::valueChanged,
         m_manager, &VoiceManager::setGlobalEnvelopeReleaseTime);
 
-    ui->CutOffKnob->setValue(1);
-    ui->CutOffKnob->setMaximum(990);
-    ui->CutOffKnob->setMinimum(1);
-    ui->CutOffKnob->setSingleStep(10);
+    ui->CutOffKnob->setMaximum(FILTER_CUTOFF_MAX);
+    ui->CutOffKnob->setMinimum(FILTER_CUTOFF_MIN);
+    ui->CutOffKnob->setSingleStep(KNOB_STEP);
+    ui->CutOffKnob->setValue(FILTER_CUTOFF_DEFAULT);
     connect(ui->CutOffKnob, &QDial::valueChanged,
         m_manager, &VoiceManager::setCutOffFrequency);
 
-    ui->ResonanceKnob->setValue(1);
-    ui->ResonanceKnob->setMaximum(990);
-    ui->ResonanceKnob->setMinimum(1);
-    ui->ResonanceKnob->setSingleStep(10);
+    ui->ResonanceKnob->setMaximum(FILTER_RESONANCE_MAX);
+    ui->ResonanceKnob->setMinimum(FILTER_RESONANCE_MIN);
+    ui->ResonanceKnob->setSingleStep(KNOB_STEP);
+    ui->ResonanceKnob->setValue(FILTER_RESONANCE_DEFAULT);
     connect(ui->ResonanceKnob, &QDial::valueChanged,
         m_manager, &VoiceManager::setResonance);
 
-    ui->FilterLFOAmountKnob->setValue(0);
-    ui->FilterLFOAmountKnob->setMaximum(1000);
-    ui->FilterLFOAmountKnob->setMinimum(0);
-    ui->FilterLFOAmountKnob->setSingleStep(10);
+    ui->FilterLFOAmountKnob->setMaximum(LFO_AMOUNT_MAX);
+    ui->FilterLFOAmountKnob->setMinimum(LFO_AMOUNT_MIN);
+    ui->FilterLFOAmountKnob->setSingleStep(KNOB_STEP);
+    ui->FilterLFOAmountKnob->setValue(LFO_AMOUNT_DEFAULT);
     connect(ui->FilterLFOAmountKnob, &QDial::valueChanged,
         m_manager, &VoiceManager::setLfoAmount);
 
-    ui->FilterLFORateKnob->setValue(0);
-    ui->FilterLFORateKnob->setMaximum(20000);
-    ui->FilterLFORateKnob->setMinimum(0);
-    ui->FilterLFORateKnob->setSingleStep(10);
+    ui->FilterLFORateKnob->setMaximum(LFO_FREQUENCY_MAX);
+    ui->FilterLFORateKnob->setMinimum(LFO_FREQUENCY_MIN);
+    ui->FilterLFORateKnob->setSingleStep(KNOB_STEP);
+    ui->FilterLFORateKnob->setValue(LFO_FREQUENCY_DEFAULT);
     connect(ui->FilterLFORateKnob, &QDial::valueChanged,
         m_manager, &VoiceManager::setLfoFrequency);
 
-    ui->MixSlider->setValue(500);
-    ui->MixSlider->setMinimum(0);
-    ui->MixSlider->setMaximum(1000);
-    ui->MixSlider->setSingleStep(10);
+    ui->MixSlider->setMinimum(OSCILLATOR_MIX_MIN);
+    ui->MixSlider->setMaximum(OSCILLATOR_MIX_MAX);
+    ui->MixSlider->setSingleStep(KNOB_STEP);
+    ui->MixSlider->setValue(OSCILLATOR_MIX_DEFAULT);
     connect(ui->MixSlider, &QSlider::valueChanged,
         m_manager, &VoiceManager::setOscillatorMix);
 
-    ui->VolumeGainKnob->setValue(0);
-    ui->VolumeGainKnob->setMaximum(1000);
-    ui->VolumeGainKnob->setMinimum(0);
-    ui->VolumeGainKnob->setSingleStep(1);
+    ui->VolumeGainKnob->setMaximum(GAIN_MAX);
+    ui->VolumeGainKnob->setMinimum(GAIN_MIN);
+    ui->VolumeGainKnob->setSingleStep(KNOB_STEP);
+    ui->VolumeGainKnob->setValue(GAIN_DEFAULT);
     connect(ui->VolumeGainKnob, &QDial::valueChanged,
         m_manager, &VoiceManager::setGain);
 
