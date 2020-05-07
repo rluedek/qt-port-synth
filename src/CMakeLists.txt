@@ -39,6 +39,8 @@ add_executable(qt-port-synth
   audio/voicemanager/VoiceManager.cpp
   audio/voicemanager/Param.cpp
   audio/modulation/ModulationValue.cpp
+  midi/MidiDevice.cpp
+  midi/MidiIn.cpp
 )
 
-target_link_libraries(qt-port-synth PRIVATE Qt5::Widgets portaudio_static)
+target_link_libraries(qt-port-synth PRIVATE Qt5::Widgets portaudio_static rtmidi pthread)

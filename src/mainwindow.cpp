@@ -200,8 +200,6 @@ MainWindow::MainWindow(QWidget *parent, AudioHal* hal, VoiceManager* pVoiceManag
     int height = screenGeometry.height();
     int width = screenGeometry.width();
     
-    // resize to fullscreen
-    //resize(width, height);
     }
 
 MainWindow::~MainWindow()
