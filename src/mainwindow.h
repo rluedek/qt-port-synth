@@ -17,9 +17,13 @@
 #include <QDial>
 #include <QSlider>
 
+#include <memory>
+
 #include "audio/Audio.h"
 #include "audio/voicemanager/VoiceManager.h"
 #include "audio/IOscillatorFunction.h"
+
+#include "midi/MidiIn.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -38,6 +42,8 @@ private:
     AudioHal *m_hal;
     VoiceManager *m_manager;
     Ui::MainWindow *ui;
+    std::shared_ptr<midi::MidiIn> m_pMidiIn;
+
 
     double m_dBaseFrequencyOsc1;
     double m_dBaseFrequencyOsc2;

@@ -14,6 +14,8 @@
 #include "audio/filter/FilterTypes.h"
 #include "audio/DefaultParameters.h"
 
+#include "midi/MidiReceiver.h"
+#include "midi/MidiChannelSelection.h"
 
 #include "ui_mainwindow.h"
 #include "qdebug.h"
@@ -25,6 +27,19 @@ MainWindow::MainWindow(QWidget *parent, AudioHal* hal, VoiceManager* pVoiceManag
     , ui(new Ui::MainWindow)
     , m_dOctaveOsc(0.0)
 {
+    // create an instance of the midi event class
+    m_pMidiIn = std::make_shared<midi::MidiIn>();
+
+    //create MidiReceiver
+    std::shared_ptr<MidiReceiver> pMidiReceiver = std::make_shared<MidiReceiver>(*m_hal);
+
+    //set receiver to midi input
+    m_pMidiIn->setInputListener(pMidiReceiver);
+
+    //setup port
+    m_pMidiIn->runMonitoring(1, MIDICHANNEL_ALL);
+
+    // set up all the ui
     ui->setupUi(this);
 
     ui->VolumeAttackKnob->setValue(ENV_ATTACK_TIME_DEFAULT);

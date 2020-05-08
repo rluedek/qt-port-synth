@@ -41,6 +41,7 @@ add_executable(qt-port-synth
   audio/modulation/ModulationValue.cpp
   midi/MidiDevice.cpp
   midi/MidiIn.cpp
+  midi/MidiReceiver.cpp
 )
 
 target_link_libraries(qt-port-synth PRIVATE Qt5::Widgets portaudio_static rtmidi pthread)
