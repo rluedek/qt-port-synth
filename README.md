@@ -1,2 +1,2 @@
 # qt-port-synth
-A basic synthesizer using PortAudio and Qt5
+A basic polyphonic two oscillators synthesizer using PortAudio, RtMidi and Qt5
