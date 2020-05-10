@@ -18,12 +18,14 @@
 #include <QSlider>
 
 #include <memory>
+#include <vector>
 
 #include "audio/Audio.h"
 #include "audio/voicemanager/VoiceManager.h"
 #include "audio/IOscillatorFunction.h"
 
 #include "midi/MidiIn.h"
+#include "midi/MidiDevice.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -43,7 +45,10 @@ private:
     VoiceManager *m_manager;
     Ui::MainWindow *ui;
     std::shared_ptr<midi::MidiIn> m_pMidiIn;
+    std::vector<midi::MidiDevice> m_midiDevices;
 
+    int m_midiPort;
+    int m_midiChannel;
 
     double m_dBaseFrequencyOsc1;
     double m_dBaseFrequencyOsc2;
@@ -91,6 +96,10 @@ private:
     void setFilterBP();
     void setFilterHP();
     void setFilterLP();
+
+    void setMidiPort(int port);
+    void setMidiChannel(int channel);
+    void monitorMidi();
     
 protected:
     void keyPressEvent(QKeyEvent* event);

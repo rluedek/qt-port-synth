@@ -10,6 +10,7 @@
 
 #include <QGuiApplication>
 #include <QScreen>
+#include <QString>
 
 #include "audio/filter/FilterTypes.h"
 #include "audio/DefaultParameters.h"
@@ -33,14 +34,30 @@ MainWindow::MainWindow(QWidget *parent, AudioHal* hal, VoiceManager* pVoiceManag
     //create MidiReceiver
     std::shared_ptr<MidiReceiver> pMidiReceiver = std::make_shared<MidiReceiver>(*m_hal);
 
+    m_pMidiIn->listDevices(m_midiDevices);
+
     //set receiver to midi input
     m_pMidiIn->setInputListener(pMidiReceiver);
 
-    //setup port
-    m_pMidiIn->runMonitoring(1, MIDICHANNEL_ALL);
-
-    // set up all the ui
+    //set up all the ui
     ui->setupUi(this);
+
+    //add midi devices to midiPortComboBox
+    m_pMidiIn->listDevices(m_midiDevices);
+    for (unsigned int i = 0; i < m_midiDevices.size(); i++)
+    {
+        ui->midiPortComboBox->addItem(QString(m_midiDevices[i].getPortName().c_str()));
+    }
+    connect(ui->midiPortComboBox,  QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this, &MainWindow::setMidiPort);
+
+    //add midi channels ti midiChannelComboBox
+    for (unsigned int i = 1; i < 17; i++)
+    {
+        ui->midiChannelComboBox->addItem(QString::number(i));
+    }
+    connect(ui->midiChannelComboBox,  QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this, &MainWindow::setMidiChannel);
 
     ui->VolumeAttackKnob->setValue(ENV_ATTACK_TIME_DEFAULT);
     ui->VolumeAttackKnob->setMaximum(ENV_ATTACK_TIME_MAX);
@@ -347,6 +364,23 @@ void MainWindow::setFilterHP()
 void MainWindow::setFilterLP()
 {
     m_manager->setFilter(FilterType::LOWPASS);
+}
+
+void MainWindow::setMidiPort(int port)
+{
+    m_midiPort = port;
+    monitorMidi();
+}
+
+void MainWindow::setMidiChannel(int channel)
+{
+    m_midiChannel = channel;
+    monitorMidi();
+}
+
+void MainWindow::monitorMidi()
+{
+    m_pMidiIn->runMonitoring(m_midiPort, m_midiChannel);
 }
 
 double MainWindow::keyNumberToFrequency(unsigned keynumber)
