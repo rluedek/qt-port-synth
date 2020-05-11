@@ -241,6 +241,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::keyPressEvent(QKeyEvent* event)
 {
+    /* Uncomment to use your keyboard instead of a midi device
     if (event->isAutoRepeat())
     {
         event->ignore();
@@ -250,11 +251,13 @@ void MainWindow::keyPressEvent(QKeyEvent* event)
         double frequency = keyNumberToFrequency(m_pianoKeys[event->key()]);
         m_hal->play(frequency);
     }
+    */
     
 }
 
 void MainWindow::keyReleaseEvent(QKeyEvent* event)
 {
+    /* Uncomment to use your keyboard instead of a midi device
     if (event->isAutoRepeat())
     {
         event->ignore();
@@ -265,6 +268,7 @@ void MainWindow::keyReleaseEvent(QKeyEvent* event)
         qDebug() << "Frequency: " << frequency;
         m_hal->stop(frequency);
     }
+    */
 }
 
 void MainWindow::radioButton_Osc1_Sinus()
