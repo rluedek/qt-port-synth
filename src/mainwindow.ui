@@ -556,30 +556,6 @@
          </item>
         </layout>
        </item>
-       <item>
-        <layout class="QVBoxLayout" name="EnvAmntHorizontalLayout">
-         <item>
-          <widget class="QDial" name="dial_17">
-           <property name="notchTarget">
-            <double>10.000000000000000</double>
-           </property>
-           <property name="notchesVisible">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_17">
-           <property name="text">
-            <string>Env amnt</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
       </layout>
      </widget>
     </item>

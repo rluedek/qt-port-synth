@@ -252,7 +252,6 @@ void MainWindow::keyPressEvent(QKeyEvent* event)
         m_hal->play(frequency);
     }
     */
-    
 }
 
 void MainWindow::keyReleaseEvent(QKeyEvent* event)
